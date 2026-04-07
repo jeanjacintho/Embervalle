@@ -26,7 +26,8 @@ namespace Embervalle.Core
         /// <summary>
         /// Indicates if the game is running on a desktop platform.
         /// </summary>
-        public readonly static bool IsDesktop = OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
+        public readonly static bool IsDesktop =
+            OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
 
         /// <summary>
         /// Initializes a new instance of the game. Configures platform-specific settings, 
@@ -43,7 +44,8 @@ namespace Embervalle.Core
             Content.RootDirectory = "Content";
 
             // Configure screen orientations.
-            graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+            graphicsDeviceManager.SupportedOrientations =
+                DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
         }
 
         /// <summary>
