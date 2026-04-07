@@ -1,11 +1,11 @@
 using System;
-using Embervalle.Core.Localization;
 using System.Collections.Generic;
 using System.Globalization;
+using Embervalle.Core.Gameplay;
+using Embervalle.Core.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Embervalle.Core
 {
@@ -17,6 +17,10 @@ namespace Embervalle.Core
     {
         // Resources for drawing.
         private GraphicsDeviceManager graphicsDeviceManager;
+
+        private readonly GameSessionController _session = new(GameSessionState.InGame);
+        private KeyboardState _previousKeyboardState;
+        private GamePadState _previousGamePadState;
 
         /// <summary>
         /// Indicates if the game is running on a mobile platform.
@@ -86,12 +90,40 @@ namespace Embervalle.Core
         /// </param>
         protected override void Update(GameTime gameTime)
         {
-            // Exit the game if the Back button (GamePad) or Escape key (Keyboard) is pressed.
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            // TODO: Add your update logic here
+            bool escapeJustPressed =
+                keyboardState.IsKeyDown(Keys.Escape) && _previousKeyboardState.IsKeyUp(Keys.Escape);
+            bool backJustPressed =
+                gamePadState.Buttons.Back == ButtonState.Pressed
+                && _previousGamePadState.Buttons.Back == ButtonState.Released;
+
+            if (IsDesktop && escapeJustPressed)
+            {
+                _session.TogglePause();
+            }
+            else if (IsMobile && backJustPressed)
+            {
+                _session.TogglePause();
+            }
+
+            // Atalho de desenvolvimento: fechar o jogo no desktop (ESC agora só pausa).
+            if (IsDesktop
+                && keyboardState.IsKeyDown(Keys.LeftControl)
+                && keyboardState.IsKeyDown(Keys.Q)
+                && _previousKeyboardState.IsKeyUp(Keys.Q))
+            {
+                Exit();
+            }
+
+            _previousKeyboardState = keyboardState;
+            _previousGamePadState = gamePadState;
+
+            if (_session.State == GameSessionState.InGame)
+            {
+                // TODO: simulação, input do jogador, sistemas — só roda com o jogo "em curso".
+            }
 
             base.Update(gameTime);
         }
@@ -104,8 +136,11 @@ namespace Embervalle.Core
         /// </param>
         protected override void Draw(GameTime gameTime)
         {
-            // Clears the screen with the MonoGame orange color before drawing.
-            GraphicsDevice.Clear(Color.MonoGameOrange);
+            // Feedback visual rápido: pausado fica mais escuro (além do log no console).
+            Color clear = _session.State == GameSessionState.Paused
+                ? Color.Lerp(Color.MonoGameOrange, Color.Black, 0.4f)
+                : Color.MonoGameOrange;
+            GraphicsDevice.Clear(clear);
 
             // TODO: Add your drawing code here
 
