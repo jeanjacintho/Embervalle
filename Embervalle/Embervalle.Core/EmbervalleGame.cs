@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Embervalle.Core.Gameplay;
 using Embervalle.Core.Localization;
+using Embervalle.Core.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,9 +19,14 @@ namespace Embervalle.Core
         // Resources for drawing.
         private GraphicsDeviceManager graphicsDeviceManager;
 
-        private readonly GameSessionController _session = new(GameSessionState.InGame);
+        private readonly GameSessionController _session = new(GameSessionState.MainMenu);
         private KeyboardState _previousKeyboardState;
         private GamePadState _previousGamePadState;
+        private MouseState _previousMouseState;
+
+        private SpriteBatch _spriteBatch = null!;
+        private SpriteFont _font = null!;
+        private Texture2D _pixel = null!;
 
         /// <summary>
         /// Indicates if the game is running on a mobile platform.
@@ -50,6 +56,8 @@ namespace Embervalle.Core
             // Configure screen orientations.
             graphicsDeviceManager.SupportedOrientations =
                 DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -80,6 +88,18 @@ namespace Embervalle.Core
         protected override void LoadContent()
         {
             base.LoadContent();
+
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _font = Content.Load<SpriteFont>("Fonts/Hud");
+            _pixel = new Texture2D(GraphicsDevice, 1, 1);
+            _pixel.SetData(new[] { Color.White });
+        }
+
+        protected override void UnloadContent()
+        {
+            _pixel.Dispose();
+            _spriteBatch.Dispose();
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -92,6 +112,7 @@ namespace Embervalle.Core
         {
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            MouseState mouseState = Mouse.GetState();
 
             bool escapeJustPressed =
                 keyboardState.IsKeyDown(Keys.Escape) && _previousKeyboardState.IsKeyUp(Keys.Escape);
@@ -99,26 +120,62 @@ namespace Embervalle.Core
                 gamePadState.Buttons.Back == ButtonState.Pressed
                 && _previousGamePadState.Buttons.Back == ButtonState.Released;
 
-            if (IsDesktop && escapeJustPressed)
+            bool click =
+                mouseState.LeftButton == ButtonState.Pressed
+                && _previousMouseState.LeftButton == ButtonState.Released;
+
+            int vw = GraphicsDevice.Viewport.Width;
+            int vh = GraphicsDevice.Viewport.Height;
+            Point mousePoint = mouseState.Position;
+
+            GameSessionState stateAtStart = _session.State;
+            bool suppressPauseToggleFromEsc = false;
+
+            if (click)
             {
-                _session.TogglePause();
-            }
-            else if (IsMobile && backJustPressed)
-            {
-                _session.TogglePause();
+                if (stateAtStart == GameSessionState.MainMenu)
+                {
+                    switch (MenuScreens.HitTestMainMenu(vw, vh, mousePoint))
+                    {
+                        case MainMenuHit.NewGame:
+                            _session.SetState(GameSessionState.InGame);
+                            suppressPauseToggleFromEsc = true;
+                            break;
+                        case MainMenuHit.Exit:
+                            Exit();
+                            break;
+                    }
+                }
+                else if (stateAtStart == GameSessionState.Paused)
+                {
+                    switch (MenuScreens.HitTestPauseMenu(vw, vh, mousePoint))
+                    {
+                        case PauseMenuHit.Continue:
+                            _session.SetState(GameSessionState.InGame);
+                            suppressPauseToggleFromEsc = true;
+                            break;
+                        case PauseMenuHit.ExitToMainMenu:
+                            _session.SetState(GameSessionState.MainMenu);
+                            break;
+                    }
+                }
             }
 
-            // Atalho de desenvolvimento: fechar o jogo no desktop (ESC agora só pausa).
-            if (IsDesktop
-                && keyboardState.IsKeyDown(Keys.LeftControl)
-                && keyboardState.IsKeyDown(Keys.Q)
-                && _previousKeyboardState.IsKeyUp(Keys.Q))
+            if (!suppressPauseToggleFromEsc)
             {
-                Exit();
+                if (IsDesktop && escapeJustPressed)
+                {
+                    _session.TogglePause();
+                }
+                else if (IsMobile && backJustPressed)
+                {
+                    _session.TogglePause();
+                }
             }
 
             _previousKeyboardState = keyboardState;
             _previousGamePadState = gamePadState;
+            _previousMouseState = mouseState;
 
             if (_session.State == GameSessionState.InGame)
             {
@@ -136,13 +193,30 @@ namespace Embervalle.Core
         /// </param>
         protected override void Draw(GameTime gameTime)
         {
-            // Feedback visual rápido: pausado fica mais escuro (além do log no console).
-            Color clear = _session.State == GameSessionState.Paused
-                ? Color.Lerp(Color.MonoGameOrange, Color.Black, 0.4f)
-                : Color.MonoGameOrange;
-            GraphicsDevice.Clear(clear);
+            int vw = GraphicsDevice.Viewport.Width;
+            int vh = GraphicsDevice.Viewport.Height;
+            Point mouse = Mouse.GetState().Position;
 
-            // TODO: Add your drawing code here
+            switch (_session.State)
+            {
+                case GameSessionState.MainMenu:
+                    GraphicsDevice.Clear(new Color(25, 32, 48));
+                    _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    MenuScreens.DrawMainMenu(_spriteBatch, _font, _pixel, vw, vh, mouse);
+                    _spriteBatch.End();
+                    break;
+
+                case GameSessionState.InGame:
+                    GraphicsDevice.Clear(Color.MonoGameOrange);
+                    break;
+
+                case GameSessionState.Paused:
+                    GraphicsDevice.Clear(Color.Lerp(Color.MonoGameOrange, Color.Black, 0.45f));
+                    _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    MenuScreens.DrawPauseMenu(_spriteBatch, _font, _pixel, vw, vh, mouse);
+                    _spriteBatch.End();
+                    break;
+            }
 
             base.Draw(gameTime);
         }
