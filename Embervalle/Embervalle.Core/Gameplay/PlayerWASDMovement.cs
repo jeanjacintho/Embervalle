@@ -1,3 +1,4 @@
+using Embervalle.Core.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -5,14 +6,14 @@ namespace Embervalle.Core.Gameplay
 {
     /// <summary>
     /// Movimentação top-down com WASD e limites na viewport (lógica separada do loop do jogo).
+    /// A posição é a dos <strong>pés</strong>, coerente com <see cref="SpriteOrigins.Character"/>.
     /// </summary>
     public static class PlayerWASDMovement
     {
         public static void SpawnCentered(PlayerBody body, int viewportWidth, int viewportHeight)
         {
-            body.Position = new Vector2(
-                (viewportWidth - body.Size) / 2f,
-                (viewportHeight - body.Size) / 2f);
+            body.FeetPosition = new Vector2(viewportWidth / 2f, viewportHeight / 2f);
+            body.LastVelocity = Vector2.Zero;
         }
 
         public static void Tick(
@@ -46,13 +47,21 @@ namespace Embervalle.Core.Gameplay
             if (move != Vector2.Zero)
             {
                 move.Normalize();
-                body.Position += move * body.MoveSpeedPixelsPerSecond * deltaSeconds;
+                body.FeetPosition += move * body.MoveSpeedPixelsPerSecond * deltaSeconds;
+                body.LastVelocity = move * body.MoveSpeedPixelsPerSecond;
+            }
+            else
+            {
+                body.LastVelocity = Vector2.Zero;
             }
 
-            float maxX = viewportWidth - body.Size;
-            float maxY = viewportHeight - body.Size;
-            body.Position.X = MathHelper.Clamp(body.Position.X, 0f, MathHelper.Max(0f, maxX));
-            body.Position.Y = MathHelper.Clamp(body.Position.Y, 0f, MathHelper.Max(0f, maxY));
+            Vector2 o = SpriteOrigins.Character;
+            float minX = o.X;
+            float maxX = viewportWidth - (PlayerBody.VisualFrameWidth - o.X);
+            float minY = o.Y;
+            float maxY = viewportHeight - (PlayerBody.VisualFrameHeight - o.Y);
+            body.FeetPosition.X = MathHelper.Clamp(body.FeetPosition.X, minX, MathHelper.Max(minX, maxX));
+            body.FeetPosition.Y = MathHelper.Clamp(body.FeetPosition.Y, minY, MathHelper.Max(minY, maxY));
         }
     }
 }

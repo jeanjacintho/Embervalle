@@ -3,13 +3,18 @@ using Microsoft.Xna.Framework;
 namespace Embervalle.Core.Gameplay
 {
     /// <summary>
-    /// Dados do jogador para movimento e desenho (apenas estado — sem lógica).
+    /// Estado do jogador: posição dos pés no mundo (ancoragem do sprite 48×64).
+    /// Hitbox de colisão não é o frame inteiro — ver documentação de sprites.
     /// </summary>
     public sealed class PlayerBody
     {
-        public Vector2 Position;
+        public const int VisualFrameWidth = 48;
 
-        public int Size { get; init; } = 32;
+        public const int VisualFrameHeight = 64;
+
+        public Vector2 FeetPosition;
+
+        public Vector2 LastVelocity { get; set; }
 
         public float MoveSpeedPixelsPerSecond { get; init; } = 220f;
     }

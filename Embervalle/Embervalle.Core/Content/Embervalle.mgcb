@@ -19,3 +19,9 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Hud.spritefont
+
+#begin Sprites/Characters/player.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=True
+/build:Sprites/Characters/player.png

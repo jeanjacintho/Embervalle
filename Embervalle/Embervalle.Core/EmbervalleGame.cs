@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Embervalle.Core.Assets;
 using Embervalle.Core.Gameplay;
 using Embervalle.Core.Localization;
+using Embervalle.Core.Sprites;
 using Embervalle.Core.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,8 +30,11 @@ namespace Embervalle.Core
         private SpriteFont font = null!;
         private Texture2D pixel = null!;
 
+        private AssetManager assetManager = null!;
         private readonly PlayerBody player = new();
-        private static readonly Color PlayerColor = new(34, 100, 68);
+        private readonly SpriteComponent playerSprite = new();
+        private PlayerSpriteAnimationController playerAnim = null!;
+        private WorldSpriteRenderer worldRenderer = null!;
 
         /// <summary>
         /// Indicates if the game is running on a mobile platform.
@@ -96,6 +101,15 @@ namespace Embervalle.Core
             font = Content.Load<SpriteFont>("Fonts/Hud");
             pixel = new Texture2D(GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
+
+            assetManager = new AssetManager(Content);
+            EmbervalleSheets.Load(assetManager);
+
+            playerSprite.Sheet = EmbervalleSheets.Player;
+            playerSprite.Origin = SpriteOrigins.Character;
+            playerSprite.SetAnimation(PlayerAnimations.IdleDown);
+            playerAnim = new PlayerSpriteAnimationController(playerSprite);
+            worldRenderer = new WorldSpriteRenderer(pixel, GraphicsDevice.Viewport.Height);
         }
 
         protected override void UnloadContent()
@@ -185,6 +199,7 @@ namespace Embervalle.Core
             {
                 float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 PlayerWASDMovement.Tick(player, keyboardState, dt, vw, vh);
+                playerAnim.Update(dt, player.LastVelocity, attacking: false, usingTool: false);
             }
 
             base.Update(gameTime);
@@ -213,31 +228,34 @@ namespace Embervalle.Core
 
                 case GameSessionState.InGame:
                     GraphicsDevice.Clear(Color.MonoGameOrange);
-                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    DrawPlayer();
+                    worldRenderer.SetMapHeight(vh);
+                    spriteBatch.Begin(
+                        SpriteSortMode.BackToFront,
+                        BlendState.AlphaBlend,
+                        SamplerState.PointClamp);
+                    worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
                     spriteBatch.End();
                     break;
 
                 case GameSessionState.Paused:
                     GraphicsDevice.Clear(Color.Lerp(Color.MonoGameOrange, Color.Black, 0.45f));
-                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    DrawPlayer();
+                    worldRenderer.SetMapHeight(vh);
+                    spriteBatch.Begin(
+                        SpriteSortMode.BackToFront,
+                        BlendState.AlphaBlend,
+                        SamplerState.PointClamp);
+                    worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
+                    spriteBatch.End();
+                    spriteBatch.Begin(
+                        SpriteSortMode.Deferred,
+                        BlendState.AlphaBlend,
+                        SamplerState.PointClamp);
                     MenuScreens.DrawPauseMenu(spriteBatch, font, pixel, vw, vh, mouse);
                     spriteBatch.End();
                     break;
             }
 
             base.Draw(gameTime);
-        }
-
-        private void DrawPlayer()
-        {
-            var rect = new Rectangle(
-                (int)MathF.Round(player.Position.X),
-                (int)MathF.Round(player.Position.Y),
-                player.Size,
-                player.Size);
-            spriteBatch.Draw(pixel, rect, PlayerColor);
         }
     }
 }
