@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Embervalle.Core.Assets;
+using Embervalle.Core.Characters;
 using Embervalle.Core.Gameplay;
 using Embervalle.Core.Localization;
 using Embervalle.Core.Sprites;
@@ -32,9 +33,12 @@ namespace Embervalle.Core
 
         private AssetManager assetManager = null!;
         private readonly PlayerBody player = new();
-        private readonly SpriteComponent playerSprite = new();
+        private CompositeCharacterComponent? playerComposite;
+        private SpriteComponent? playerSprite;
         private PlayerSpriteAnimationController playerAnim = null!;
         private WorldSpriteRenderer worldRenderer = null!;
+
+        private CompositeCharacterRenderer compositeRenderer = null!;
 
         /// <summary>
         /// Indicates if the game is running on a mobile platform.
@@ -105,11 +109,27 @@ namespace Embervalle.Core
             assetManager = new AssetManager(Content);
             EmbervalleSheets.Load(assetManager);
 
-            playerSprite.Sheet = EmbervalleSheets.Player;
-            playerSprite.Origin = SpriteOrigins.Character;
-            playerSprite.SetAnimation(PlayerAnimations.IdleDown);
-            playerAnim = new PlayerSpriteAnimationController(playerSprite);
             worldRenderer = new WorldSpriteRenderer(pixel, GraphicsDevice.Viewport.Height);
+
+            compositeRenderer = new CompositeCharacterRenderer(pixel);
+
+            CharacterDefinition playerDef = GameCharacterBootstrap.PlayerDefinition;
+            ILocomotionAnimationTarget playerLocomotion;
+            if (playerDef.VisualKind == CharacterVisualKind.SingleSpriteSheet)
+            {
+                playerSprite = SpriteCharacterFactory.CreateSingleSprite(playerDef, assetManager);
+                playerLocomotion = new SingleSpriteLocomotionAdapter(playerSprite);
+            }
+            else
+            {
+                playerComposite = CompositeCharacterFactory.FromDefinition(
+                    playerDef,
+                    assetManager,
+                    EmbervalleSheets.Player);
+                playerLocomotion = playerComposite;
+            }
+
+            playerAnim = new PlayerSpriteAnimationController(playerLocomotion);
         }
 
         protected override void UnloadContent()
@@ -199,7 +219,12 @@ namespace Embervalle.Core
             {
                 float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 PlayerWASDMovement.Tick(player, keyboardState, dt, vw, vh);
-                playerAnim.Update(dt, player.LastVelocity, attacking: false, usingTool: false);
+
+                var viewRect = new Rectangle(0, 0, vw, vh);
+                if (CompositeSpritePerformance.ShouldUpdateAnimation(viewRect, player.FeetPosition))
+                {
+                    playerAnim.Update(dt, player.LastVelocity, attacking: false, usingTool: false);
+                }
             }
 
             base.Update(gameTime);
@@ -233,7 +258,7 @@ namespace Embervalle.Core
                         SpriteSortMode.BackToFront,
                         BlendState.AlphaBlend,
                         SamplerState.PointClamp);
-                    worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
+                    DrawPlayerCharacter();
                     spriteBatch.End();
                     break;
 
@@ -244,7 +269,7 @@ namespace Embervalle.Core
                         SpriteSortMode.BackToFront,
                         BlendState.AlphaBlend,
                         SamplerState.PointClamp);
-                    worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
+                    DrawPlayerCharacter();
                     spriteBatch.End();
                     spriteBatch.Begin(
                         SpriteSortMode.Deferred,
@@ -256,6 +281,19 @@ namespace Embervalle.Core
             }
 
             base.Draw(gameTime);
+        }
+
+        private void DrawPlayerCharacter()
+        {
+            if (playerComposite != null && compositeRenderer != null)
+            {
+                float baseDepth = worldRenderer.GetLayerDepth(player.FeetPosition.Y);
+                compositeRenderer.Draw(spriteBatch, player.FeetPosition, playerComposite, baseDepth);
+            }
+            else if (playerSprite != null)
+            {
+                worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
+            }
         }
     }
 }

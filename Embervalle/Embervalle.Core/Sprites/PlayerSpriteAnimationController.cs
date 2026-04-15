@@ -1,17 +1,18 @@
+using Embervalle.Core.Characters;
 using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>Máquina simples: idle / walk por direção; extensível para ataque e ferramenta.</summary>
+    /// <summary>Idle / walk por direção — usa <see cref="CharacterAnimationId"/> + perfil do <see cref="BodyType"/> no componente.</summary>
     public sealed class PlayerSpriteAnimationController
     {
-        private readonly SpriteComponent _sprite;
+        private readonly ILocomotionAnimationTarget _target;
 
         private Direction _facing = Direction.Down;
 
-        public PlayerSpriteAnimationController(SpriteComponent sprite)
+        public PlayerSpriteAnimationController(ILocomotionAnimationTarget target)
         {
-            _sprite = sprite;
+            _target = target;
         }
 
         private enum Direction
@@ -45,7 +46,7 @@ namespace Embervalle.Core.Sprites
             }
             else if (usingTool)
             {
-                _sprite.SetAnimation(PlayerAnimations.ToolUse);
+                _target.SetLogicalAnimation(CharacterAnimationId.ToolUse);
             }
             else if (isMoving)
             {
@@ -56,45 +57,45 @@ namespace Embervalle.Core.Sprites
                 SetIdleAnimation();
             }
 
-            _sprite.Update(deltaTime);
+            _target.UpdateAnimation(deltaTime);
         }
 
         private void SetWalkAnimation()
         {
-            _sprite.SetAnimation(
+            _target.SetLogicalAnimation(
                 _facing switch
                 {
-                    Direction.Down => PlayerAnimations.WalkDown,
-                    Direction.Up => PlayerAnimations.WalkUp,
-                    Direction.Left => PlayerAnimations.WalkLeft,
-                    Direction.Right => PlayerAnimations.WalkRight,
-                    _ => PlayerAnimations.WalkDown,
+                    Direction.Down => CharacterAnimationId.WalkDown,
+                    Direction.Up => CharacterAnimationId.WalkUp,
+                    Direction.Left => CharacterAnimationId.WalkLeft,
+                    Direction.Right => CharacterAnimationId.WalkRight,
+                    _ => CharacterAnimationId.WalkDown,
                 });
         }
 
         private void SetIdleAnimation()
         {
-            _sprite.SetAnimation(
+            _target.SetLogicalAnimation(
                 _facing switch
                 {
-                    Direction.Down => PlayerAnimations.IdleDown,
-                    Direction.Up => PlayerAnimations.IdleUp,
-                    Direction.Left => PlayerAnimations.IdleLeft,
-                    Direction.Right => PlayerAnimations.IdleRight,
-                    _ => PlayerAnimations.IdleDown,
+                    Direction.Down => CharacterAnimationId.IdleDown,
+                    Direction.Up => CharacterAnimationId.IdleUp,
+                    Direction.Left => CharacterAnimationId.IdleLeft,
+                    Direction.Right => CharacterAnimationId.IdleRight,
+                    _ => CharacterAnimationId.IdleDown,
                 });
         }
 
         private void SetAttackAnimation()
         {
-            _sprite.SetAnimation(
+            _target.SetLogicalAnimation(
                 _facing switch
                 {
-                    Direction.Down => PlayerAnimations.AttackDown,
-                    Direction.Up => PlayerAnimations.AttackUp,
-                    Direction.Left => PlayerAnimations.AttackLeft,
-                    Direction.Right => PlayerAnimations.AttackRight,
-                    _ => PlayerAnimations.AttackDown,
+                    Direction.Down => CharacterAnimationId.AttackDown,
+                    Direction.Up => CharacterAnimationId.AttackUp,
+                    Direction.Left => CharacterAnimationId.AttackLeft,
+                    Direction.Right => CharacterAnimationId.AttackRight,
+                    _ => CharacterAnimationId.AttackDown,
                 });
         }
     }
