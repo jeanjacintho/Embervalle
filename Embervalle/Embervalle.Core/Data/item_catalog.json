@@ -1,0 +1,62 @@
+{
+  "items": [
+    {
+      "itemId": "weapon_basic_sword",
+      "name": "Espada basica",
+      "category": "Weapon",
+      "rarity": "Common",
+      "maxStackSize": 1,
+      "weight": 3.0,
+      "baseValue": 40,
+      "iconFrame": 0,
+      "description": "",
+      "linkedWeaponId": "sword_basic",
+      "weapon": { "damage": 25 }
+    },
+    {
+      "itemId": "weapon_axe",
+      "name": "Machado",
+      "category": "Weapon",
+      "rarity": "Uncommon",
+      "maxStackSize": 1,
+      "weight": 5.0,
+      "baseValue": 90,
+      "iconFrame": 1,
+      "linkedWeaponId": "axe",
+      "weapon": { "damage": 45 }
+    },
+    {
+      "itemId": "weapon_short_bow",
+      "name": "Arco curto",
+      "category": "Weapon",
+      "rarity": "Common",
+      "maxStackSize": 1,
+      "weight": 2.0,
+      "baseValue": 55,
+      "iconFrame": 2,
+      "linkedWeaponId": "bow_short",
+      "weapon": { "damage": 20 }
+    },
+    {
+      "itemId": "ore_iron",
+      "name": "Minerio de ferro",
+      "category": "Resource",
+      "rarity": "Common",
+      "maxStackSize": 99,
+      "weight": 0.25,
+      "baseValue": 8,
+      "iconFrame": 0
+    },
+    {
+      "itemId": "food_bread",
+      "name": "Pao",
+      "category": "Consumable",
+      "rarity": "Common",
+      "maxStackSize": 30,
+      "weight": 0.1,
+      "baseValue": 5,
+      "iconFrame": 1,
+      "consumable": { "healAmount": 20 }
+    }
+  ]
+}

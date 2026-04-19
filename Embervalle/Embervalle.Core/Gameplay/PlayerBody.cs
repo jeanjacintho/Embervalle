@@ -17,5 +17,9 @@ namespace Embervalle.Core.Gameplay
         public Vector2 LastVelocity { get; set; }
 
         public float MoveSpeedPixelsPerSecond { get; init; } = 220f;
+
+        public float Health { get; set; } = 100f;
+
+        public float MaxHealth { get; set; } = 100f;
     }
 }

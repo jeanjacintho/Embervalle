@@ -31,3 +31,9 @@
 /processor:TextureProcessor
 /processorParam:PremultiplyAlpha=True
 /build:Sprites/Characters/body_sprite.png
+
+#begin Sprites/Items/weapons.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=True
+/build:Sprites/Items/weapons.png

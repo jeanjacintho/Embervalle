@@ -13,10 +13,36 @@ namespace Embervalle.Core.Assets
     {
         private readonly ContentManager _content;
         private readonly Dictionary<string, SpriteSheet> _sheets = new();
+        private readonly Dictionary<string, Texture2D> _textures = new();
 
         public AssetManager(ContentManager content)
         {
             _content = content;
+        }
+
+        /// <summary>Caminho logico sem extensao (ex.: Sprites/Items/sword_icon). Null se nao existir no Content.</summary>
+        public Texture2D? TryLoadTexture(string contentPathWithoutExtension)
+        {
+            if (string.IsNullOrWhiteSpace(contentPathWithoutExtension))
+            {
+                return null;
+            }
+
+            if (_textures.TryGetValue(contentPathWithoutExtension, out Texture2D? cached))
+            {
+                return cached;
+            }
+
+            try
+            {
+                Texture2D texture = _content.Load<Texture2D>(contentPathWithoutExtension);
+                _textures[contentPathWithoutExtension] = texture;
+                return texture;
+            }
+            catch (ContentLoadException)
+            {
+                return null;
+            }
         }
 
         public SpriteSheet LoadSheet(string contentPathWithoutExtension, int frameWidth, int frameHeight)

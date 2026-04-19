@@ -1,9 +1,24 @@
 using System;
+using System.Collections.Generic;
 
 namespace Embervalle.Core.Combat
 {
     public static class WeaponDefinitions
     {
+        private static readonly Dictionary<string, WeaponData> ById = new();
+
+        static WeaponDefinitions()
+        {
+            Register(BasicSword);
+            Register(Axe);
+            Register(ShortBow);
+        }
+
+        private static void Register(WeaponData weapon) => ById[weapon.Id] = weapon;
+
+        public static WeaponData? TryGet(string id) =>
+            ById.TryGetValue(id, out WeaponData? w) ? w : null;
+
         public static readonly WeaponData BasicSword = new()
         {
             Id = "sword_basic",
