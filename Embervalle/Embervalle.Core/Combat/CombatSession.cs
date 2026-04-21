@@ -59,8 +59,13 @@ namespace Embervalle.Core.Combat
 
         public int MeleeSwingWeaponIconFrame => _toolbarCombat.MeleeSwingWeaponIconFrame;
 
-        
         public bool IsPlayerMovementLocked => _toolbarCombat.IsMovementLocked;
+
+        public Vector2? GetAttackSpriteFaceDirection() => _toolbarCombat.GetAttackSpriteFaceDirection();
+
+        public bool ShouldDrawMeleeWeaponOverlay => _toolbarCombat.ShouldDrawMeleeWeaponOverlay;
+
+        public int MeleeWeaponOverlayDrawFrame => _toolbarCombat.GetMeleeWeaponOverlayFrame();
 
         
         public void ResetDemoTargets(int viewportWidth, int viewportHeight)

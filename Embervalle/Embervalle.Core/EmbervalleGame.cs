@@ -317,9 +317,7 @@ namespace Embervalle.Core
                             player.LastVelocity,
                             attacking: combat.IsAttackAnimationActive,
                             usingTool: false,
-                            attackFaceDirection: combat.IsMeleeSwingActive
-                                ? MeleeFacingVectors.ToWorldUnit(combat.MeleeSwingFacing)
-                                : null);
+                            attackFaceDirection: combat.GetAttackSpriteFaceDirection());
                     }
                 }
             }
@@ -408,7 +406,7 @@ namespace Embervalle.Core
                 worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
             }
 
-            if (combat.IsMeleeSwingActive)
+            if (combat.ShouldDrawMeleeWeaponOverlay)
             {
                 MeleeSwingVisualRenderer.Draw(
                     spriteBatch,
@@ -416,7 +414,7 @@ namespace Embervalle.Core
                     combat.MeleeSwingWeaponIconFrame,
                     player.FeetPosition,
                     combat.MeleeSwingFacing,
-                    combat.MeleeSwingCurrentFrame,
+                    combat.MeleeWeaponOverlayDrawFrame,
                     baseDepth,
                     Color.White);
             }

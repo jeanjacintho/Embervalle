@@ -8,21 +8,10 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    
-    
     public sealed class ToolbarCombatController
     {
-        
-        
-        private const float FrameDurationSeconds = 0.065f;
-
-        
-        private const float FollowThroughSeconds = 0.12f;
-        
-
         private readonly float[] _toolbarCooldownRemaining;
 
-        
         private bool _swingActive;
         private int _swingFrame;
         private float _swingFrameTimer;
@@ -32,12 +21,15 @@ namespace Embervalle.Core.Combat
         private int _swingIconFrame;
         private readonly HashSet<int> _swingHitEnemies = new();
 
-        
+        private int _meleeWeaponDisplayFrame;
+
+        private bool _lockMeleeSpriteFacing;
+        private PlayerCardinalFacing _lockedSpriteFacing;
+
         private bool _bowNocking;
         private int _bowSlotIndex;
         private float _bowChargeTime;
 
-        
         private float _attackAnimTimer;
 
         public ToolbarCombatController(int toolbarSlotCount)
@@ -45,23 +37,34 @@ namespace Embervalle.Core.Combat
             _toolbarCooldownRemaining = new float[toolbarSlotCount];
         }
 
-        
         public bool IsAttackAnimationActive => _attackAnimTimer > 0f;
 
-        
         public bool IsMeleeSwingActive => _swingActive;
 
-        
         public int MeleeSwingCurrentFrame => _swingFrame;
 
         public PlayerCardinalFacing MeleeSwingFacing => _swingFacing;
 
         public int MeleeSwingWeaponIconFrame => _swingIconFrame;
 
-        
         public bool IsMovementLocked => _swingActive || _followThroughTimer > 0f;
 
-        
+        public Vector2? GetAttackSpriteFaceDirection()
+        {
+            if (_attackAnimTimer <= 0f || !_lockMeleeSpriteFacing)
+            {
+                return null;
+            }
+
+            return MeleeFacingVectors.ToWorldUnit(_lockedSpriteFacing);
+        }
+
+        public bool ShouldDrawMeleeWeaponOverlay =>
+            _swingActive || (_lockMeleeSpriteFacing && _attackAnimTimer > 0f);
+
+        public int GetMeleeWeaponOverlayFrame() =>
+            Math.Min(_meleeWeaponDisplayFrame, MeleeSwingFrameTable.FrameCount - 1);
+
         public void Update(
             float dt,
             PlayerBody player,
@@ -74,12 +77,11 @@ namespace Embervalle.Core.Combat
             List<CombatEnemy> enemies)
         {
             AdvanceCooldowns(dt);
+            AdvanceAttackAnimAndMeleeFacingLock(dt);
             AdvanceSwingFrames(dt, player, enemies);
-            AdvanceAttackAnim(dt);
 
             if (_swingActive)
             {
-                
                 return;
             }
 
@@ -97,6 +99,7 @@ namespace Embervalle.Core.Combat
                 {
                     UpdateBowHeld(player, bowWeapon, _bowSlotIndex, input, dt, rangedAim, projectiles);
                 }
+
                 return;
             }
 
@@ -110,7 +113,6 @@ namespace Embervalle.Core.Combat
             TryMeleeOrConsumable(player, input, toolbar, slotIndex, combatFacing, enemies);
         }
 
-        
         private void AdvanceCooldowns(float dt)
         {
             for (int s = 0; s < _toolbarCooldownRemaining.Length; s++)
@@ -119,11 +121,15 @@ namespace Embervalle.Core.Combat
             }
         }
 
-        private void AdvanceAttackAnim(float dt)
+        private void AdvanceAttackAnimAndMeleeFacingLock(float dt)
         {
             if (_attackAnimTimer > 0f)
             {
                 _attackAnimTimer = MathHelper.Max(0f, _attackAnimTimer - dt);
+                if (_attackAnimTimer <= 0f)
+                {
+                    _lockMeleeSpriteFacing = false;
+                }
             }
 
             if (_followThroughTimer > 0f)
@@ -132,7 +138,6 @@ namespace Embervalle.Core.Combat
             }
         }
 
-        
         private void AdvanceSwingFrames(float dt, PlayerBody player, List<CombatEnemy> enemies)
         {
             if (!_swingActive)
@@ -141,15 +146,18 @@ namespace Embervalle.Core.Combat
             }
 
             _swingFrameTimer -= dt;
-
-            while (_swingFrameTimer <= 0f && _swingActive)
+            int guard = 0;
+            while (_swingFrameTimer <= 0f && _swingActive && guard < MeleeSwingTiming.MaxSwingCatchUpStepsPerFrame)
             {
-                
+                guard++;
                 if (_swingWeapon != null)
                 {
                     Rectangle hitbox = MeleeSwingFrameTable.GetHitbox(
-                        _swingFacing, _swingFrame, player.FeetPosition);
+                        _swingFacing,
+                        _swingFrame,
+                        player.FeetPosition);
                     MeleeCombat.ApplyFrameHit(hitbox, _swingWeapon, enemies, _swingHitEnemies);
+                    _meleeWeaponDisplayFrame = _swingFrame;
                 }
 
                 _swingFrame++;
@@ -157,11 +165,12 @@ namespace Embervalle.Core.Combat
                 if (_swingFrame >= MeleeSwingFrameTable.FrameCount)
                 {
                     _swingActive = false;
-                    _followThroughTimer = FollowThroughSeconds;
+                    _meleeWeaponDisplayFrame = MeleeSwingFrameTable.FrameCount - 1;
+                    _followThroughTimer = MeleeSwingTiming.FollowThroughSeconds;
                 }
                 else
                 {
-                    _swingFrameTimer += FrameDurationSeconds;
+                    _swingFrameTimer += MeleeSwingTiming.FrameDurationSeconds;
                 }
             }
         }
@@ -221,20 +230,23 @@ namespace Embervalle.Core.Combat
                 return;
             }
 
-            
             _swingActive = true;
-            _swingFrame = 0;
-            _swingFrameTimer = FrameDurationSeconds;
+            _swingFrame = 1;
+            _swingFrameTimer = MeleeSwingTiming.FrameDurationSeconds;
             _swingFacing = combatFacing;
             _swingWeapon = w;
             _swingIconFrame = data.IconAtlasFrameIndex >= 0 ? data.IconAtlasFrameIndex : 0;
             _swingHitEnemies.Clear();
             _followThroughTimer = 0f;
 
-            _toolbarCooldownRemaining[slotIndex] = w.CooldownSeconds;
-            _attackAnimTimer = MeleeSwingFrameTable.FrameCount * FrameDurationSeconds + FollowThroughSeconds;
+            _meleeWeaponDisplayFrame = 0;
+            _lockMeleeSpriteFacing = true;
+            _lockedSpriteFacing = combatFacing;
 
-            
+            _toolbarCooldownRemaining[slotIndex] = w.CooldownSeconds;
+            float swingSeconds = MeleeSwingFrameTable.FrameCount * MeleeSwingTiming.FrameDurationSeconds;
+            _attackAnimTimer = swingSeconds + MeleeSwingTiming.FollowThroughSeconds;
+
             Rectangle firstHitbox = MeleeSwingFrameTable.GetHitbox(_swingFacing, 0, player.FeetPosition);
             MeleeCombat.ApplyFrameHit(firstHitbox, w, enemies, _swingHitEnemies);
         }
