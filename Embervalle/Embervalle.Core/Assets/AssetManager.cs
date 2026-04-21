@@ -6,9 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Assets
 {
-    /// <summary>
-    /// Único ponto de carregamento de texturas / sheets (cache por caminho lógico do Content).
-    /// </summary>
+    
+    
     public sealed class AssetManager
     {
         private readonly ContentManager _content;
@@ -20,7 +19,7 @@ namespace Embervalle.Core.Assets
             _content = content;
         }
 
-        /// <summary>Caminho logico sem extensao (ex.: Sprites/Items/sword_icon). Null se nao existir no Content.</summary>
+        
         public Texture2D? TryLoadTexture(string contentPathWithoutExtension)
         {
             if (string.IsNullOrWhiteSpace(contentPathWithoutExtension))

@@ -4,9 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Renderiza todos os NPCs camada a camada para manter batches estáveis com atlas (doc 09).
-    /// </summary>
+    
+    
     public static class CompositeLayerRenderCoordinator
     {
         public readonly struct CompositeDrawInstance
@@ -25,7 +24,7 @@ namespace Embervalle.Core.Characters
             public float BaseLayerDepth { get; }
         }
 
-        /// <summary>Uma passagem por slot: todos os NPCs na camada N antes de N+1.</summary>
+        
         public static void DrawAllByLayerPass(
             SpriteBatch spriteBatch,
             IReadOnlyList<CompositeDrawInstance> instances,

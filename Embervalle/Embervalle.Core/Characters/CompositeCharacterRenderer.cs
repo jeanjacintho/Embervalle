@@ -4,10 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Desenha sombra + 4 partes com profundidade incremental.
-    /// <see cref="SpriteSortMode.BackToFront"/> — maior depth desenhado primeiro (atrás).
-    /// </summary>
+    
+    
     public sealed class CompositeCharacterRenderer
     {
         private readonly Texture2D _pixel;
@@ -17,7 +15,7 @@ namespace Embervalle.Core.Characters
             _pixel = singlePixelWhiteTexture;
         }
 
-        /// <summary>Desenha todas as partes na ordem correta.</summary>
+        
         public void Draw(
             SpriteBatch spriteBatch,
             Vector2 feetWorldPosition,
@@ -31,7 +29,7 @@ namespace Embervalle.Core.Characters
             }
         }
 
-        /// <summary>Uma passagem por slot — todos os NPCs na camada N antes de N+1 (doc 09).</summary>
+        
         public void DrawSlot(
             SpriteBatch spriteBatch,
             Vector2 feetWorldPosition,
@@ -82,7 +80,7 @@ namespace Embervalle.Core.Characters
                 layerDepth);
         }
 
-        /// <summary>Profundidade por índice de slot: sombra mais “atrás”, cabeça mais “à frente”.</summary>
+        
         public static float ComputePartDepth(float baseLayerDepth, int slotIndex)
         {
             return MathHelper.Clamp(baseLayerDepth + 0.0015f - slotIndex * 0.0001f, 0f, 1f);

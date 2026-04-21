@@ -3,9 +3,8 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    /// <summary>
-    /// Hitbox em relação aos pés (mesma convenção que <see cref="Sprites.SpriteOrigins.Character"/>).
-    /// </summary>
+    
+    
     public sealed class HitboxComponent
     {
         public int Width { get; init; } = 32;

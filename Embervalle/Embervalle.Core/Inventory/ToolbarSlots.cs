@@ -1,9 +1,7 @@
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>
-    /// Barra de ferramentas (estilo Stardew Valley): slots visíveis para usar com o botão de ação.
-    /// O item do slot selecionado é o que dispara ataque / consumo / arco.
-    /// </summary>
+    
+    
     public sealed class ToolbarSlots : IContainer
     {
         public const int SlotCountValue = 2;

@@ -3,14 +3,8 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Keyframes para <c>Sprites/Characters/body_sprite</c>: grelha com células <b>48×64 px</b> (24 colunas; idle linhas 0–3, walk 4–7).
-    /// Linhas 1–4 (índice 0–3): idle — cabeça, torso, braços, pernas.
-    /// Linhas 5–8 (índice 4–7): walk — mesma ordem.
-    /// Colunas 1–5 (índice 0–4): frente; 6–10 (5–9): costas; 11–15 (10–14): esquerda; 16–20 (15–19): direita — idle com 5 frames/dir.
-    /// Walk: 6 frames/dir — colunas 0–5, 6–11, 12–17, 18–23.
-    /// Índice linear = <see cref="SheetColumns"/> × linha + coluna.
-    /// </summary>
+    
+    
     public static class BodySpriteSheetAnimations
     {
         public const int SheetColumns = 24;
@@ -26,7 +20,7 @@ namespace Embervalle.Core.Characters
         private static readonly IReadOnlyDictionary<CharacterPartSlot, IReadOnlyDictionary<CharacterAnimationId, Animation>> Cache =
             BuildAll();
 
-        /// <summary>Mapa completo animação lógica → template para esta parte.</summary>
+        
         public static IReadOnlyDictionary<CharacterAnimationId, Animation> GetForPart(CharacterPartSlot slot)
         {
             return Cache[slot];
@@ -52,7 +46,7 @@ namespace Embervalle.Core.Characters
             _ => 4,
         };
 
-        /// <summary>5 frames consecutivos a partir da coluna inicial.</summary>
+        
         private static int[] IdleDir(int partRow, int colStart)
         {
             var a = new int[5];
@@ -64,7 +58,7 @@ namespace Embervalle.Core.Characters
             return a;
         }
 
-        /// <summary>6 frames consecutivos a partir da coluna inicial (walk).</summary>
+        
         private static int[] WalkDir(int partRow, int colStart)
         {
             var a = new int[6];
@@ -98,19 +92,19 @@ namespace Embervalle.Core.Characters
             int ir = IdleRow(slot);
             int wr = WalkRow(slot);
 
-            // Idle por direção (cols 0–4, 5–9, 10–14, 15–19)
+            
             int[] idleDown = IdleDir(ir, 0);
             int[] idleUp = IdleDir(ir, 5);
             int[] idleLeft = IdleDir(ir, 10);
             int[] idleRight = IdleDir(ir, 15);
 
-            // Walk por direção (cols 0–5, 6–11, 12–17, 18–23)
+            
             int[] walkDown = WalkDir(wr, 0);
             int[] walkUp = WalkDir(wr, 6);
             int[] walkLeft = WalkDir(wr, 12);
             int[] walkRight = WalkDir(wr, 18);
 
-            // Ataques / ferramenta / dano: placeholder = mesma pose que idle frente (5 frames) até haver arte dedicada
+            
             int[] atkDown = IdleDir(ir, 0);
             int[] atkUp = IdleDir(ir, 5);
             int[] atkLeft = IdleDir(ir, 10);

@@ -8,10 +8,8 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    /// <summary>
-    /// Estado de combate no mundo: alvos, projéteis, mana e orquestração.
-    /// O uso de itens da toolbar (arma melee, consumível, arco) está em <see cref="ToolbarCombatController"/>.
-    /// </summary>
+    
+    
     public sealed class CombatSession
     {
         public const int PlayerOwnerId = 0;
@@ -48,28 +46,23 @@ namespace Embervalle.Core.Combat
             _toolbarCombat = new ToolbarCombatController(ToolbarSlots.SlotCountValue);
         }
 
-        // ──────────── Propriedades expostas ao EmbervalleGame ────────────
-
-        /// <summary>Em animação de ataque (melee ou arco) — drive da animação do personagem.</summary>
+        
         public bool IsAttackAnimationActive => _toolbarCombat.IsAttackAnimationActive;
 
-        /// <summary>Swing melee ativo — o sprite da arma deve ser desenhado.</summary>
+        
         public bool IsMeleeSwingActive => _toolbarCombat.IsMeleeSwingActive;
 
-        /// <summary>Frame atual do swing (0 a <see cref="MeleeSwingFrameTable.FrameCount"/> − 1).</summary>
+        
         public int MeleeSwingCurrentFrame => _toolbarCombat.MeleeSwingCurrentFrame;
 
         public PlayerCardinalFacing MeleeSwingFacing => _toolbarCombat.MeleeSwingFacing;
 
         public int MeleeSwingWeaponIconFrame => _toolbarCombat.MeleeSwingWeaponIconFrame;
 
-        /// <summary>
-        /// O jogador não pode mover durante o swing (igual SDV: UsingTool=true / CanMove=false).
-        /// </summary>
+        
         public bool IsPlayerMovementLocked => _toolbarCombat.IsMovementLocked;
 
-        // ──────────────────────────────────────────────────────
-
+        
         public void ResetDemoTargets(int viewportWidth, int viewportHeight)
         {
             Enemies.Clear();

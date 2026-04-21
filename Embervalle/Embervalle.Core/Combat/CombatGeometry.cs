@@ -12,7 +12,7 @@ namespace Embervalle.Core.Combat
             return MathF.Acos(dot);
         }
 
-        /// <summary>Interseção segmento de reta com retângulo alinhado aos eixos (swept collision).</summary>
+        
         public static bool SegmentIntersectsRect(Vector2 start, Vector2 end, Rectangle rect)
         {
             if (RectContainsPoint(rect, start) || RectContainsPoint(rect, end))

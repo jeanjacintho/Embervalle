@@ -3,9 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Assets
 {
-    /// <summary>
-    /// Gera um atlas com celulas 16x16 (doc inventario) — substitua por textura no Content quando quiser.
-    /// </summary>
+    
+    
     public static class ItemIconAtlasBuilder
     {
         public const int CellSize = 16;
@@ -29,7 +28,7 @@ namespace Embervalle.Core.Assets
                 DepthStencilState.None,
                 RasterizerState.CullCounterClockwise);
 
-            // Placeholder: indices 0+ alinham com iconFrame de itens NAO-arma (armas usam Sprites/Items/weapons.png).
+            
             Color[] colors =
             {
                 new Color(120, 120, 130),

@@ -2,9 +2,8 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Offsets e escalas por tipo de corpo — só dados; a renderização usa estes valores (4 partes + sombra).
-    /// </summary>
+    
+    
     public sealed class BodyPartConfig
     {
         public Vector2 LegsOffset;
@@ -42,9 +41,7 @@ namespace Embervalle.Core.Characters
             };
         }
 
-        /// <summary>
-        /// Mesmas escalas que <see cref="For"/> mas offsets zero — peças já alinhadas na mesma grelha (ex. body_sprite).
-        /// </summary>
+        
         public static BodyPartConfig ForStackedBodySprite(BodyType bodyType)
         {
             BodyPartConfig c = For(bodyType);
@@ -55,7 +52,7 @@ namespace Embervalle.Core.Characters
             return c;
         }
 
-        /// <summary>Tabela aproximada; ajuste com arte.</summary>
+        
         public static BodyPartConfig For(BodyType body)
         {
             return body switch

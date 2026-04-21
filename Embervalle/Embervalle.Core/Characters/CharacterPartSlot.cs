@@ -1,8 +1,7 @@
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Ordem de desenho: sombra → pernas → torso → braços → cabeça (doc modular 4 partes).
-    /// </summary>
+    
+    
     public enum CharacterPartSlot
     {
         Shadow = 0,

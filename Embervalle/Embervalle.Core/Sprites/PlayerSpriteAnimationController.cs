@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>Idle / walk por direção — usa <see cref="CharacterAnimationId"/> + perfil do <see cref="BodyType"/> no componente.</summary>
+    
     public sealed class PlayerSpriteAnimationController
     {
         private readonly ILocomotionAnimationTarget _target;
@@ -23,7 +23,7 @@ namespace Embervalle.Core.Sprites
             Right,
         }
 
-        /// <summary>Direção para combate / ferramentas (Stardew: movimento atual ou última direção em idle).</summary>
+        
         public PlayerCardinalFacing GetCombatFacing(Vector2 velocity)
         {
             bool isMoving = velocity.LengthSquared() > 0.0001f;

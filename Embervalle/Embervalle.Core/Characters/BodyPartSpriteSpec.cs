@@ -4,9 +4,8 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Uma textura de Content + grelha + conjunto de animações (ex.: braços “walk_s” = <see cref="CharacterAnimationId.WalkDown"/>).
-    /// </summary>
+    
+    
     public sealed class BodyPartSpriteSpec
     {
         public BodyPartSpriteSpec(

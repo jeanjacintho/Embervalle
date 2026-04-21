@@ -2,10 +2,8 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>
-    /// Direção em que o jogador está virado (idle / movimento), como em Stardew Valley —
-    /// o uso de ferramenta / arma melee segue esta direção, não a mira do rato.
-    /// </summary>
+    
+    
     public enum PlayerCardinalFacing
     {
         Down,
@@ -14,7 +12,7 @@ namespace Embervalle.Core.Sprites
         Right,
     }
 
-    /// <summary>Vetor unitário no plano do jogo (Y+ = sul no ecrã).</summary>
+    
     public static class MeleeFacingVectors
     {
         public static Vector2 ToWorldUnit(PlayerCardinalFacing f) =>

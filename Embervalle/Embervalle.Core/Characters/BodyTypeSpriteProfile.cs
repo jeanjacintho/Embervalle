@@ -4,9 +4,8 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Conjunto de <see cref="BodyPartSpriteSpec"/> por slot para um <see cref="BodyType"/> — usado na criação do personagem.
-    /// </summary>
+    
+    
     public sealed class BodyTypeSpriteProfile
     {
         public BodyTypeSpriteProfile(
@@ -21,9 +20,7 @@ namespace Embervalle.Core.Characters
 
         public IReadOnlyDictionary<CharacterPartSlot, BodyPartSpriteSpec> PartsBySlot { get; }
 
-        /// <summary>
-        /// Atribui a cada parte visível uma instância de animação clonada; define <see cref="CompositeCharacterComponent.SpriteFlipHorizontal"/> a partir do torso.
-        /// </summary>
+        
         public void ApplyToComposite(CompositeCharacterComponent composite, CharacterAnimationId id)
         {
             bool flipFromTorso = false;

@@ -2,10 +2,8 @@ using System;
 
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>
-    /// Instância de animação em execução (definição + estado por entidade).
-    /// Os templates estáticos em <see cref="PlayerAnimations"/> são só protótipos — não chamar <see cref="Update"/> neles.
-    /// </summary>
+    
+    
     public sealed class Animation
     {
         public string Name { get; init; } = "";
@@ -39,7 +37,7 @@ namespace Embervalle.Core.Sprites
             };
         }
 
-        /// <summary>Cópia com estado reiniciado — usada ao trocar animação.</summary>
+        
         public Animation CloneAndReset()
         {
             return new Animation

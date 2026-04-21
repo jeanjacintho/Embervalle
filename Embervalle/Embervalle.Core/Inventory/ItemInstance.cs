@@ -1,6 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Instância concreta no inventário (pilha, durabilidade, frescor, etc.).</summary>
+    
     public sealed class ItemInstance
     {
         public required string ItemId { get; set; }

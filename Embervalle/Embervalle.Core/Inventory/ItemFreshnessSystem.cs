@@ -2,7 +2,7 @@ using Embervalle.Core.Events;
 
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Chamar no tick de dia (EventBus) — doc 14.</summary>
+    
     public static class ItemFreshnessSystem
     {
         public static void TickFreshness(IContainer container)

@@ -2,10 +2,8 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.World
 {
-    /// <summary>
-    /// Câmera 2D — conversão tela ↔ mundo. Sem scroll, mundo coincide com a viewport (0,0) no canto superior esquerdo.
-    /// Quando houver mapa maior, basta aplicar <see cref="Offset"/> e <see cref="Zoom"/>.
-    /// </summary>
+    
+    
     public sealed class Camera2D
     {
         public Vector2 Offset { get; set; }

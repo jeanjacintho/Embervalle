@@ -4,7 +4,7 @@ namespace Embervalle.Core.Sprites
 {
     public static class SpriteOrigins
     {
-        /// <summary>Personagens 48×64 — centro horizontal, ~90% altura (pés).</summary>
+        
         public static readonly Vector2 Character = new(24f, 58f);
 
         public static readonly Vector2 CharacterSmall = new(16f, 44f);

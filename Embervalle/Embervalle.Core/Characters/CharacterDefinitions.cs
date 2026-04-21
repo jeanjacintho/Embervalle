@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>Definições de personagens — jogador e NPCs no mesmo formato (doc 07).</summary>
+    
     public static class CharacterDefinitions
     {
-        /// <summary>Herói padrão — corpo médio, roupa de viajante; ajuste aqui ou em <see cref="GameCharacterBootstrap"/>.</summary>
+        
         public static readonly CharacterDefinition Player = new()
         {
             Id = "player",

@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>
-    /// Desenha sprites ancorados nos pés com profundidade por Y e sombra oval na base.
-    /// Requer <see cref="SpriteSortMode.BackToFront"/> no <see cref="SpriteBatch.Begin"/> do mundo.
-    /// </summary>
+    
+    
     public sealed class WorldSpriteRenderer
     {
         private readonly Texture2D _pixel;
@@ -60,7 +58,7 @@ namespace Embervalle.Core.Sprites
         private void DrawShadow(SpriteBatch spriteBatch, Vector2 feet, float entityDepth)
         {
             float shadowDepth = MathHelper.Clamp(entityDepth - 0.02f, 0f, 1f);
-            // Textura 1×1: origem tem de estar no espaço da textura (0–1). (10,3) deslocava o retângulo 20×6 para o lado.
+            
             Vector2 shadowCenter = feet + new Vector2(0f, 2f);
             spriteBatch.Draw(
                 _pixel,

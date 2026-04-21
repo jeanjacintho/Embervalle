@@ -1,6 +1,6 @@
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>Templates de animação do jogador (índices na sheet 48×64 — ver docs).</summary>
+    
     public static class PlayerAnimations
     {
         public static readonly Animation IdleDown =

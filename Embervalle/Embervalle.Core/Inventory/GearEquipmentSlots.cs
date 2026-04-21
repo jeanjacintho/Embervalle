@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Slots tipados de equipamento (Skyrim-like) — dados, não lógica de UI.</summary>
+    
     public sealed class GearEquipmentSlots
     {
         public EquipmentSlot MainHand { get; } = new(EquipmentSlotType.MainHand);

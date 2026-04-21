@@ -6,10 +6,8 @@ namespace Embervalle.Core.Combat
 {
     public static class MeleeCombat
     {
-        /// <summary>
-        /// Ataque de área para feitiços melee (arco + alcance, sem frame table).
-        /// Usado por <see cref="SpellCastSystem"/> para AreaMelee.
-        /// </summary>
+        
+        
         public static void ExecuteMeleeAttack(
             Vector2 origin,
             Vector2 aimDirNormalized,
@@ -52,10 +50,7 @@ namespace Embervalle.Core.Combat
             }
         }
 
-        /// <summary>
-        /// Verifica e aplica dano do frame atual do swing contra todos os inimigos.
-        /// Padrão SDV: hitbox retangular por frame, inimigos com I-frames não são atingidos duas vezes.
-        /// </summary>
+        
         public static void ApplyFrameHit(
             Rectangle hitbox,
             WeaponData weapon,

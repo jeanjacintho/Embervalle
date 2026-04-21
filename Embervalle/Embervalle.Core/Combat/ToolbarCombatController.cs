@@ -8,24 +8,21 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    /// <summary>
-    /// Uso do item da toolbar (padrão Stardew Valley).
-    /// Melee segue <see cref="PlayerCardinalFacing"/> com swing de <see cref="MeleeSwingFrameTable.FrameCount"/>
-    /// frames discretos, cada um com hitbox própria e dano aplicado por frame.
-    /// </summary>
+    
+    
     public sealed class ToolbarCombatController
     {
-        // ──────────────────────────────────────────────
-        //  Duração de cada frame do swing (SDV ≈ 50ms/frame a 8fps → ~400ms total / 6 frames ≈ 67ms)
+        
+        
         private const float FrameDurationSeconds = 0.065f;
 
-        // Pausa de follow-through após o último frame antes de poder atacar novamente
+        
         private const float FollowThroughSeconds = 0.12f;
-        // ──────────────────────────────────────────────
+        
 
         private readonly float[] _toolbarCooldownRemaining;
 
-        // ── Estado do swing melee ──
+        
         private bool _swingActive;
         private int _swingFrame;
         private float _swingFrameTimer;
@@ -35,12 +32,12 @@ namespace Embervalle.Core.Combat
         private int _swingIconFrame;
         private readonly HashSet<int> _swingHitEnemies = new();
 
-        // ── Estado do arco ──
+        
         private bool _bowNocking;
         private int _bowSlotIndex;
         private float _bowChargeTime;
 
-        // ── Animação de ataque (feedback ao PlayerAnimController) ──
+        
         private float _attackAnimTimer;
 
         public ToolbarCombatController(int toolbarSlotCount)
@@ -48,28 +45,23 @@ namespace Embervalle.Core.Combat
             _toolbarCooldownRemaining = new float[toolbarSlotCount];
         }
 
-        // ──────────────── Propriedades públicas ────────────────
-
-        /// <summary>Indica que está em animação de ataque (melee ou arco).</summary>
+        
         public bool IsAttackAnimationActive => _attackAnimTimer > 0f;
 
-        /// <summary>Indica que o swing melee está ativo (arma deve ser desenhada).</summary>
+        
         public bool IsMeleeSwingActive => _swingActive;
 
-        /// <summary>Frame atual do swing (0 a <see cref="MeleeSwingFrameTable.FrameCount"/> − 1).</summary>
+        
         public int MeleeSwingCurrentFrame => _swingFrame;
 
         public PlayerCardinalFacing MeleeSwingFacing => _swingFacing;
 
         public int MeleeSwingWeaponIconFrame => _swingIconFrame;
 
-        /// <summary>
-        /// Movimento do jogador deve ser bloqueado durante o swing melee (igual SDV: UsingTool=true).
-        /// </summary>
+        
         public bool IsMovementLocked => _swingActive || _followThroughTimer > 0f;
 
-        // ──────────────── Update principal ────────────────
-
+        
         public void Update(
             float dt,
             PlayerBody player,
@@ -87,7 +79,7 @@ namespace Embervalle.Core.Combat
 
             if (_swingActive)
             {
-                // Jogador está em pleno swing: não processa nova ação
+                
                 return;
             }
 
@@ -118,8 +110,7 @@ namespace Embervalle.Core.Combat
             TryMeleeOrConsumable(player, input, toolbar, slotIndex, combatFacing, enemies);
         }
 
-        // ──────────────── Internos ────────────────
-
+        
         private void AdvanceCooldowns(float dt)
         {
             for (int s = 0; s < _toolbarCooldownRemaining.Length; s++)
@@ -141,10 +132,7 @@ namespace Embervalle.Core.Combat
             }
         }
 
-        /// <summary>
-        /// Avança frames do swing melee e aplica hitbox por frame (padrão SDV).
-        /// Cada frame tem posição e rotação da arma; dano é verificado a cada frame.
-        /// </summary>
+        
         private void AdvanceSwingFrames(float dt, PlayerBody player, List<CombatEnemy> enemies)
         {
             if (!_swingActive)
@@ -156,7 +144,7 @@ namespace Embervalle.Core.Combat
 
             while (_swingFrameTimer <= 0f && _swingActive)
             {
-                // Aplica hit do frame atual antes de avançar
+                
                 if (_swingWeapon != null)
                 {
                     Rectangle hitbox = MeleeSwingFrameTable.GetHitbox(
@@ -233,7 +221,7 @@ namespace Embervalle.Core.Combat
                 return;
             }
 
-            // Inicia swing melee (padrão SDV: setFarmerAnimating → doSwipe)
+            
             _swingActive = true;
             _swingFrame = 0;
             _swingFrameTimer = FrameDurationSeconds;
@@ -246,7 +234,7 @@ namespace Embervalle.Core.Combat
             _toolbarCooldownRemaining[slotIndex] = w.CooldownSeconds;
             _attackAnimTimer = MeleeSwingFrameTable.FrameCount * FrameDurationSeconds + FollowThroughSeconds;
 
-            // Hit imediato no frame 0 (SDV também chama DoDamage no início do swing)
+            
             Rectangle firstHitbox = MeleeSwingFrameTable.GetHitbox(_swingFacing, 0, player.FeetPosition);
             MeleeCombat.ApplyFrameHit(firstHitbox, w, enemies, _swingHitEnemies);
         }

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    /// <summary>Movimento + swept collision no mesmo passo (evita tunneling).</summary>
+    
     public sealed class ProjectilePhysicsSystem
     {
         private readonly ProjectilePool _pool;

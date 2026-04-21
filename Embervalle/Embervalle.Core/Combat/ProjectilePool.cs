@@ -41,7 +41,7 @@ namespace Embervalle.Core.Combat
         }
     }
 
-    /// <summary>Pool de projéteis — sem alocação por disparo.</summary>
+    
     public sealed class ProjectilePool
     {
         private readonly ProjectileState[] _slots;
@@ -59,7 +59,7 @@ namespace Embervalle.Core.Combat
 
         public ReadOnlySpan<ProjectileState> AllSlots => _slots.AsSpan(0, _capacity);
 
-        /// <summary>Tenta obter slot; null se pool cheio.</summary>
+        
         public ProjectileState? Spawn(
             Vector2 origin,
             Vector2 directionNormalized,

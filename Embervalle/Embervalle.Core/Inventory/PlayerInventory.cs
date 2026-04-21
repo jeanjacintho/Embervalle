@@ -4,7 +4,7 @@ namespace Embervalle.Core.Inventory
 {
     public sealed class PlayerInventory : IContainer
     {
-        /// <summary>Grade da mochila 6x5 (sem hotbar estilo Minecraft).</summary>
+        
         public const int MainSlots = 30;
 
         public const int TotalSlots = MainSlots;

@@ -3,7 +3,7 @@ using Embervalle.Core.Events;
 
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Toda movimentação entre containers passa por aqui (regra do doc 14).</summary>
+    
     public static class TransferSystem
     {
         public static TransferResult Transfer(

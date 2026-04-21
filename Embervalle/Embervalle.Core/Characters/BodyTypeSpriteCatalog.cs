@@ -4,34 +4,30 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Ponto central: para cada <see cref="BodyType"/> define PNG e animações por parte (pernas, torso, braços, cabeça).
-    /// Ajusta <see cref="PathForPart"/> e <see cref="AnimationsForPart"/>.
-    /// </summary>
+    
+    
     public static class BodyTypeSpriteCatalog
     {
-        /// <summary>Ver <see cref="BodySpriteSheetAnimations"/> — mesma textura para as 4 partes.</summary>
+        
         private const string BodySpriteSheetPath = "Sprites/Characters/body_sprite";
 
         private static readonly Dictionary<BodyType, BodyTypeSpriteProfile> LayeredProfiles = BuildLayeredProfiles();
 
         private static readonly Dictionary<BodyType, BodyTypeSpriteProfile> PlaceholderProfiles = BuildPlaceholderProfiles();
 
-        /// <summary>Quatro partes empilhadas — uma sheet por parte (ou a mesma sheet repetida até haver arte).</summary>
+        
         public static BodyTypeSpriteProfile GetLayered(BodyType bodyType) => LayeredProfiles[bodyType];
 
-        /// <summary>Só torso + sombra (placeholder até haver arte separada por parte).</summary>
+        
         public static BodyTypeSpriteProfile GetPlaceholder(BodyType bodyType) => PlaceholderProfiles[bodyType];
 
-        /// <summary>Caminho no Content (sem extensão) por tipo de corpo e parte.</summary>
+        
         public static string PathForPart(BodyType bodyType, CharacterPartSlot slot)
         {
             return (bodyType, slot) switch
             {
-                // Ex.: (BodyType.Tall, CharacterPartSlot.Arms) => "Sprites/Characters/body_tall/arms",
-                // (BodyType.Tall, CharacterPartSlot.Legs) => "Sprites/Characters/body_tall/legs",
-                // (BodyType.Tall, CharacterPartSlot.Torso) => "Sprites/Characters/body_tall/torso",
-                // (BodyType.Tall, CharacterPartSlot.Head) => "Sprites/Characters/body_tall/head",
+                
+                
                 _ => BodySpriteSheetPath,
             };
         }

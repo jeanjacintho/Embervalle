@@ -17,9 +17,7 @@ namespace Embervalle.Core.UI
         ExitToMainMenu,
     }
 
-    /// <summary>
-    /// Layout e desenho do menu principal e do painel de pausa (coordenadas de tela).
-    /// </summary>
+    
     public static class MenuScreens
     {
         private const int ButtonWidth = 320;
@@ -83,7 +81,7 @@ namespace Embervalle.Core.UI
             int viewportHeight,
             Point mouse)
         {
-            // Painel semi-opaco atrás dos botões
+            
             int panelW = ButtonWidth + 80;
             int panelH = ButtonHeight * 2 + ButtonGap + 100;
             var panel = new Rectangle(

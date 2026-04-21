@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    /// <summary>Inimigo ou alvo de treino — identificação por id estável (save, quests).</summary>
+    
     public sealed class CombatEnemy
     {
         public int Id { get; init; }

@@ -6,10 +6,8 @@ using System.Text.Json.Serialization;
 
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>
-    /// Carrega definicoes de itens de JSON (fonte unica para design).
-    /// Caminho padrao: pasta do executavel / Data / item_catalog.json
-    /// </summary>
+    
+    
     public static class ItemCatalogLoader
     {
         private static readonly JsonSerializerOptions JsonOptions = new()
@@ -181,7 +179,7 @@ namespace Embervalle.Core.Inventory
 
             public string? SpriteId { get; set; }
 
-            /// <summary>Indice no atlas de icones 16x16 (grelha 8x2 por defeito).</summary>
+            
             public int? IconFrame { get; set; }
 
             public string? Description { get; set; }

@@ -6,12 +6,11 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>Monta <see cref="CompositeCharacterComponent"/> (4 partes). Para sprite único usa <see cref="SpriteCharacterFactory"/>.</summary>
+    
     public static class CompositeCharacterFactory
     {
-        /// <param name="useSingleFullBodyPlaceholder">
-        /// Se true: só torso + sombra (protótipo). Se false: as 4 partes com sheets do <see cref="BodyTypeSpriteCatalog"/> (padrão).
-        /// </param>
+        
+        
         public static CompositeCharacterComponent FromDefinition(
             CharacterDefinition definition,
             AssetManager assetManager,
@@ -99,9 +98,7 @@ namespace Embervalle.Core.Characters
             return composite;
         }
 
-        /// <summary>
-        /// <see cref="SpriteBatch.Draw"/> multiplica a textura pela cor — só aplicar tons de pele/roupa quando a arte for cinza.
-        /// </summary>
+        
         private static void ApplyCompositeLayerTints(
             CompositeCharacterComponent composite,
             CharacterAppearance appearance,

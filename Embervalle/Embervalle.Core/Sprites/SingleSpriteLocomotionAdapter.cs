@@ -2,7 +2,7 @@ using Embervalle.Core.Characters;
 
 namespace Embervalle.Core.Sprites
 {
-    /// <summary>Encaminha <see cref="CharacterAnimationId"/> para um <see cref="SpriteComponent"/> (corpo inteiro).</summary>
+    
     public sealed class SingleSpriteLocomotionAdapter : ILocomotionAnimationTarget
     {
         private readonly SpriteComponent _sprite;

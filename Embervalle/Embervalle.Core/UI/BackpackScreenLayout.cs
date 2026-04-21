@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.UI
 {
-    /// <summary>Layout da mochila (grade + hit-test) em coordenadas de tela.</summary>
+    
     public static class BackpackScreenLayout
     {
         public const int GridColumns = 6;
@@ -21,7 +21,7 @@ namespace Embervalle.Core.UI
             return new Vector2(x, y);
         }
 
-        /// <summary>Hit-test da grade da mochila. Retorna indice 0..29 ou null.</summary>
+        
         public static int? HitTestGrid(int viewportWidth, int viewportHeight, Point mouse)
         {
             Vector2 origin = GridTopLeft(viewportWidth, viewportHeight);
@@ -63,7 +63,7 @@ namespace Embervalle.Core.UI
                 CellSize);
         }
 
-        /// <summary>Dois quadrados inferiores esquerda (HUD).</summary>
+        
         public static Rectangle QuickSlotRect(int viewportHeight, int slotIndex)
         {
             int stride = CellSize + CellGap;

@@ -4,11 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Combat
 {
-    /// <summary>
-    /// Desenha o sprite da arma durante o swing melee, usando frames discretos —
-    /// a mesma abordagem de <c>MeleeWeapon.drawDuringUse</c> no Stardew Valley.
-    /// Cada frame tem posição e rotação pré-calculadas em <see cref="MeleeSwingFrameTable"/>.
-    /// </summary>
+    
+    
     public static class MeleeSwingVisualRenderer
     {
         public static void Draw(
@@ -25,7 +22,7 @@ namespace Embervalle.Core.Combat
 
             Rectangle src = weaponSheet.GetFrame(weaponIconFrameIndex);
 
-            // Origem no cabo da arma (parte inferior do sprite, igual SDV center=(1,15)/16px)
+            
             var origin = new Vector2(src.Width * 0.5f, src.Height * 0.82f);
 
             Vector2 pos = feetWorldPosition + fd.Offset;

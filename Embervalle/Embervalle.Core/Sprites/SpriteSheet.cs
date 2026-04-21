@@ -24,7 +24,7 @@ namespace Embervalle.Core.Sprites
 
         public int FrameHeight => _frameHeight;
 
-        /// <summary>Índice linear → retângulo na textura (grid em linhas, esquerda → direita).</summary>
+        
         public Rectangle GetFrame(int frameIndex)
         {
             int col = frameIndex % _columns;
@@ -36,7 +36,7 @@ namespace Embervalle.Core.Sprites
                 _frameHeight);
         }
 
-        /// <summary>Linha e coluna explícitas na grelha de frames.</summary>
+        
         public Rectangle GetFrameAtGrid(int row, int col)
         {
             return new Rectangle(

@@ -48,7 +48,7 @@ namespace Embervalle.Core.Inventory
             return n;
         }
 
-        /// <summary>Tenta colocar o item em pilhas existentes e depois em slots vazios.</summary>
+        
         public static int TryAddToSlots(
             ItemSlot[] slots,
             ItemInstance item,
@@ -60,7 +60,7 @@ namespace Embervalle.Core.Inventory
                 return 0;
             }
 
-            // Empilhar
+            
             for (int i = 0; i < slots.Length; i++)
             {
                 ItemSlot slot = slots[i];
@@ -93,7 +93,7 @@ namespace Embervalle.Core.Inventory
                 }
             }
 
-            // Slots vazios
+            
             for (int i = 0; i < slots.Length; i++)
             {
                 ItemSlot slot = slots[i];

@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>Dados de customização reutilizável — combinação de partes + tint (doc 07).</summary>
+    
     public sealed class CharacterAppearance
     {
         public BodyType Body { get; set; } = BodyType.Average;
@@ -27,10 +27,7 @@ namespace Embervalle.Core.Characters
 
         public Color SkinColor { get; set; } = new Color(220, 175, 130);
 
-        /// <summary>
-        /// Se true, <see cref="TopColor"/>, <see cref="BottomColor"/> e <see cref="SkinColor"/> multiplicam cada camada (sprites em escala de cinza).
-        /// Se false (padrão), usa <see cref="Color.White"/> — cores finais vêm do PNG (ex. body_sprite).
-        /// </summary>
+        
         public bool MultiplyCompositeLayersByAppearanceColors { get; set; }
     }
 }

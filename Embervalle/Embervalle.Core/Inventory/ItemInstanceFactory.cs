@@ -2,14 +2,12 @@ using System;
 
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>
-    /// Cria pilhas a partir do catalogo (<see cref="ItemDatabase"/> / item_catalog.json).
-    /// Chamar apenas depois de <see cref="ItemDatabase.RegisterCoreItems"/>.
-    /// </summary>
+    
+    
     public static class ItemInstanceFactory
     {
-        /// <param name="quantity">Quantidade inicial (limitada a <see cref="ItemData.MaxStackSize"/>).</param>
-        /// <exception cref="InvalidOperationException">Se <paramref name="itemId"/> nao existir no catalogo.</exception>
+        
+        
         public static ItemInstance Create(string itemId, int quantity = 1)
         {
             if (!ItemDatabase.TryGet(itemId, out ItemData? data) || data is null)
@@ -30,7 +28,7 @@ namespace Embervalle.Core.Inventory
             };
         }
 
-        /// <summary>Tenta criar; falha silenciosamente se o id for desconhecido (mods / dados opcionais).</summary>
+        
         public static bool TryCreate(string itemId, int quantity, out ItemInstance? instance)
         {
             instance = null;

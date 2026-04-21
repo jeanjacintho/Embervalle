@@ -1,6 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Definição imutável de um tipo de item (tabela de design).</summary>
+    
     public sealed class ItemData
     {
         public required string ItemId { get; init; }
@@ -17,18 +17,15 @@ namespace Embervalle.Core.Inventory
 
         public int BaseValue { get; init; }
 
-        /// <summary>Legado / referencia para ferramentas; icones usam <see cref="IconAtlasFrameIndex"/>.</summary>
+        
         public string SpriteId { get; init; } = "";
 
-        /// <summary>
-        /// Indice linear na grelha: <see cref="Assets.EmbervalleSheets.WeaponIcons"/> (32×32) se <see cref="Category"/> for Weapon;
-        /// caso contrario <see cref="Assets.EmbervalleSheets.ItemIcons"/> (16×16). -1 = sem icone.
-        /// </summary>
+        
         public int IconAtlasFrameIndex { get; init; } = -1;
 
         public string Description { get; init; } = "";
 
-        /// <summary>ID de <see cref="Combat.WeaponData"/> em <see cref="Combat.WeaponDefinitions"/>.</summary>
+        
         public string? LinkedWeaponId { get; init; }
 
         public WeaponStats? Weapon { get; init; }
@@ -41,7 +38,7 @@ namespace Embervalle.Core.Inventory
 
         public bool IsPerishable { get; init; }
 
-        /// <summary>Dias até estragar; 0 = não perece.</summary>
+        
         public int FreshnessMax { get; init; }
     }
 

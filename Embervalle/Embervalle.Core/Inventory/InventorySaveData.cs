@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Snapshot serializável — apenas primitivos e IDs (doc 14).</summary>
+    
     public sealed class InventorySaveData
     {
         public List<SlotSaveData> PlayerSlots { get; set; } = new();

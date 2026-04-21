@@ -16,12 +16,10 @@ namespace Embervalle.Core.Inventory
 
         public static int Count => Items.Count;
 
-        /// <summary>Limpa o catalogo (ex.: antes de recarregar JSON).</summary>
+        
         public static void ResetCatalog() => Items.Clear();
 
-        /// <summary>
-        /// Carrega <c>Data/item_catalog.json</c> ao lado do executavel; se faltar ou der erro, usa itens embutidos.
-        /// </summary>
+        
         public static void RegisterCoreItems()
         {
             if (Items.Count > 0)

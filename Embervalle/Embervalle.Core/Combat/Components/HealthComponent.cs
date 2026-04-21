@@ -13,7 +13,7 @@ namespace Embervalle.Core.Combat
 
         public bool IsInvincible => InvincibilityTimer > 0f;
 
-        /// <param name="ignoreInvincibility">DOTs e efeitos contínuos — não bloqueiam por i-frames de golpe.</param>
+        
         public void TakeDamage(int amount, float invincDuration = 0.5f, bool ignoreInvincibility = false)
         {
             if (!ignoreInvincibility && IsInvincible)

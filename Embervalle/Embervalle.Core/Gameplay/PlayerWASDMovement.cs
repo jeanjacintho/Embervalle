@@ -4,10 +4,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Embervalle.Core.Gameplay
 {
-    /// <summary>
-    /// Movimentação top-down com WASD e limites na viewport (lógica separada do loop do jogo).
-    /// A posição é a dos <strong>pés</strong>, coerente com <see cref="SpriteOrigins.Character"/>.
-    /// </summary>
+    
+    
     public static class PlayerWASDMovement
     {
         public static void SpawnCentered(PlayerBody body, int viewportWidth, int viewportHeight)

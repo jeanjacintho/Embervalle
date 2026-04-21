@@ -13,7 +13,7 @@ namespace Embervalle.Core.Inventory
         public bool IsFull =>
             Item != null && Item.Quantity >= Item.GetData().MaxStackSize;
 
-        /// <summary>Devolve quantidade que não coube (overflow).</summary>
+        
         public int TryAdd(ItemInstance incoming)
         {
             if (IsLocked)

@@ -10,7 +10,7 @@ namespace Embervalle.Core.Inventory
 
         ItemSlot[] GetAllSlots();
 
-        /// <summary>Devolve quantidade que não coube no container.</summary>
+        
         int TryAdd(ItemInstance item);
 
         bool TryRemove(string itemId, int qty);

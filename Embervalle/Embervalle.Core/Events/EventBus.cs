@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Events
 {
-    /// <summary>
-    /// Publicação simples entre sistemas — sem referências cruzadas diretas.
-    /// </summary>
+    
+    
     public static class EventBus
     {
         private static readonly Dictionary<Type, List<Delegate>> Subscribers = new();

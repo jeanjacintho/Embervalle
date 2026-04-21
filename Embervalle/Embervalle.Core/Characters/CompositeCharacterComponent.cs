@@ -4,15 +4,15 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>Humanoide em 4 partes + sombra — cada parte tem a sua instância de animação.</summary>
+    
     public sealed class CompositeCharacterComponent : ILocomotionAnimationTarget
     {
         public BodyType BodyType { get; set; } = BodyType.Average;
 
-        /// <summary>Definido na factory — usado por <see cref="SetLogicalAnimation"/>.</summary>
+        
         public BodyTypeSpriteProfile? SpriteProfile { get; set; }
 
-        /// <summary>Espelhar todas as camadas (ex.: walk left com arte só para a direita).</summary>
+        
         public bool SpriteFlipHorizontal { get; set; }
 
         private CharacterAnimationId? _currentLogicalAnimationId;

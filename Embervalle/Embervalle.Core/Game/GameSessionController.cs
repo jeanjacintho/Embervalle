@@ -2,9 +2,8 @@ using System;
 
 namespace Embervalle.Core.Gameplay
 {
-    /// <summary>
-    /// Mantém o estado da sessão e registra transições no console (útil para debug).
-    /// </summary>
+    
+    
     public sealed class GameSessionController
     {
         private GameSessionState _state;
@@ -28,10 +27,7 @@ namespace Embervalle.Core.Gameplay
             WriteStateLine("transição");
         }
 
-        /// <summary>
-        /// Alterna entre <see cref="GameSessionState.InGame"/> e <see cref="GameSessionState.Paused"/>.
-        /// Em outros estados não altera nada (menu, etc. terão fluxo próprio depois).
-        /// </summary>
+        
         public void TogglePause()
         {
             if (_state == GameSessionState.InGame)

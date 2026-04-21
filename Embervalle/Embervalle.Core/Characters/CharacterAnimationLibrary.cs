@@ -3,12 +3,11 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    /// <summary>
-    /// Mapa canónico animação lógica → template (frames, duração, flip). Reutilizado pelos perfis de cada parte / tipo de corpo.
-    /// </summary>
+    
+    
     public static class CharacterAnimationLibrary
     {
-        /// <summary>Humanoide 48×64 — mesma grelha que <see cref="PlayerAnimations"/>.</summary>
+        
         public static IReadOnlyDictionary<CharacterAnimationId, Animation> DefaultHumanoid { get; } =
             new Dictionary<CharacterAnimationId, Animation>
             {

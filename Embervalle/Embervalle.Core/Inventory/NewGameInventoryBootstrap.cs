@@ -2,9 +2,8 @@ namespace Embervalle.Core.Inventory
 {
     public static class NewGameInventoryBootstrap
     {
-        /// <summary>
-        /// Inventario inicial: todos os itens vêm do catalogo (<see cref="ItemDatabase"/>).
-        /// </summary>
+        
+        
         public static void Apply(PlayerInventory inv, ToolbarSlots toolbar)
         {
             _ = inv.TryAdd(ItemInstanceFactory.Create("weapon_axe", 1));
