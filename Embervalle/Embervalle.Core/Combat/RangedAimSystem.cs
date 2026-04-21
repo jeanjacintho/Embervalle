@@ -1,14 +1,15 @@
 using Embervalle.Core.Input;
+using Embervalle.Core.Sprites;
 using Embervalle.Core.World;
 using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
     /// <summary>
-    /// Desktop: mira pelo mouse (coordenada de tela → mundo via <see cref="Camera2D"/>).
-    /// Direção normalizada usada por melee em arco, arco e magias.
+    /// Mira com o rato (mundo) — usada só para <b>projéteis</b> e <b>magias</b>, como em Stardew
+    /// (arco aponta para o cursor). Combate melee usa <see cref="MeleeFacingVectors"/>, não isto.
     /// </summary>
-    public sealed class AimSystem
+    public sealed class RangedAimSystem
     {
         private const float MinAimLengthSq = 0.01f;
 

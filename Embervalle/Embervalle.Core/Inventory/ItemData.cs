@@ -21,8 +21,8 @@ namespace Embervalle.Core.Inventory
         public string SpriteId { get; init; } = "";
 
         /// <summary>
-        /// Indice linear na grelha: <see cref="Assets.EmbervalleSheets.WeaponIcons"/> se <see cref="Category"/> for Weapon;
-        /// caso contrario <see cref="Assets.EmbervalleSheets.ItemIcons"/>. Celulas 16x16. -1 = sem icone.
+        /// Indice linear na grelha: <see cref="Assets.EmbervalleSheets.WeaponIcons"/> (32×32) se <see cref="Category"/> for Weapon;
+        /// caso contrario <see cref="Assets.EmbervalleSheets.ItemIcons"/> (16×16). -1 = sem icone.
         /// </summary>
         public int IconAtlasFrameIndex { get; init; } = -1;
 

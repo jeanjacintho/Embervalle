@@ -10,7 +10,7 @@ namespace Embervalle.Core.Assets
         /// <summary>Atlas de icones de inventario (16x16 por celula) — itens nao-arma (placeholder ou futuro PNG).</summary>
         public static SpriteSheet ItemIcons { get; private set; } = null!;
 
-        /// <summary>Atlas <c>Sprites/Items/weapons.png</c> (16x16 por arma).</summary>
+        /// <summary>Atlas <c>Sprites/Items/weapons.png</c> (32×32 por célula).</summary>
         public static SpriteSheet WeaponIcons { get; private set; } = null!;
 
         public static void Load(AssetManager assets)

@@ -23,12 +23,58 @@ namespace Embervalle.Core.Sprites
             Right,
         }
 
-        public void Update(float deltaTime, Vector2 velocity, bool attacking, bool usingTool)
+        /// <summary>Direção para combate / ferramentas (Stardew: movimento atual ou última direção em idle).</summary>
+        public PlayerCardinalFacing GetCombatFacing(Vector2 velocity)
         {
             bool isMoving = velocity.LengthSquared() > 0.0001f;
+            Direction d;
             if (isMoving)
             {
-                // Diagonal: priorizar animação lateral (esq./dir.); só cima/baixo se movimento puramente vertical.
+                const float axisEps = 0.0001f;
+                if (velocity.X > axisEps || velocity.X < -axisEps)
+                {
+                    d = velocity.X > 0 ? Direction.Right : Direction.Left;
+                }
+                else
+                {
+                    d = velocity.Y > 0 ? Direction.Down : Direction.Up;
+                }
+            }
+            else
+            {
+                d = _facing;
+            }
+
+            return (PlayerCardinalFacing)(int)d;
+        }
+
+        public void Update(
+            float deltaTime,
+            Vector2 velocity,
+            bool attacking,
+            bool usingTool,
+            Vector2? attackFaceDirection = null)
+        {
+            bool isMoving = velocity.LengthSquared() > 0.0001f;
+            if (attacking && attackFaceDirection.HasValue)
+            {
+                Vector2 ad = attackFaceDirection.Value;
+                if (ad.LengthSquared() > 0.0001f)
+                {
+                    ad = Vector2.Normalize(ad);
+                    const float axisEps = 0.0001f;
+                    if (ad.X > axisEps || ad.X < -axisEps)
+                    {
+                        _facing = ad.X > 0 ? Direction.Right : Direction.Left;
+                    }
+                    else
+                    {
+                        _facing = ad.Y > 0 ? Direction.Down : Direction.Up;
+                    }
+                }
+            }
+            else if (isMoving)
+            {
                 const float axisEps = 0.0001f;
                 if (velocity.X > axisEps || velocity.X < -axisEps)
                 {

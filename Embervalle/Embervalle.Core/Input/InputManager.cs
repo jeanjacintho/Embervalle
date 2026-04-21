@@ -4,7 +4,8 @@ using Microsoft.Xna.Framework.Input;
 namespace Embervalle.Core.Input
 {
     /// <summary>
-    /// Mira com mouse; X/C escolhem slot rapido; botao esquerdo usa o item do slot ativo; Q = magia.
+    /// Estilo Stardew: X/C escolhem slot da toolbar; botão esquerdo = usar item ativo (ferramenta/arma/consumível);
+    /// mira do rato só para magia/arco; Q = magia.
     /// </summary>
     public sealed class InputManager
     {

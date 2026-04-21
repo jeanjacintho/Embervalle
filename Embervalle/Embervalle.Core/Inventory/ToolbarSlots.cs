@@ -1,15 +1,18 @@
 namespace Embervalle.Core.Inventory
 {
-    /// <summary>Dois slots de acesso rapido (qualquer item). Nao usa peso do inventario.</summary>
-    public sealed class QuickAccessSlots : IContainer
+    /// <summary>
+    /// Barra de ferramentas (estilo Stardew Valley): slots visíveis para usar com o botão de ação.
+    /// O item do slot selecionado é o que dispara ataque / consumo / arco.
+    /// </summary>
+    public sealed class ToolbarSlots : IContainer
     {
         public const int SlotCountValue = 2;
 
-        public string ContainerId => "quick_access";
+        public string ContainerId => "toolbar";
 
         private readonly ItemSlot[] _slots = new ItemSlot[SlotCountValue];
 
-        public QuickAccessSlots()
+        public ToolbarSlots()
         {
             for (int i = 0; i < _slots.Length; i++)
             {

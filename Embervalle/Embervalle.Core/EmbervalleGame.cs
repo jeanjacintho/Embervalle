@@ -33,9 +33,9 @@ namespace Embervalle.Core
 
         private PlayerInventory playerInventory = new();
 
-        private QuickAccessSlots quickAccess = new();
+        private ToolbarSlots toolbar = new();
 
-        private int selectedQuickSlotIndex;
+        private int selectedToolbarSlotIndex;
 
         private bool backpackOpen;
 
@@ -135,7 +135,7 @@ namespace Embervalle.Core
             assetManager = new AssetManager(Content);
             EmbervalleSheets.Load(assetManager);
             EmbervalleSheets.LoadWeaponIcons(
-                assetManager.LoadSheet("Sprites/Items/weapons", ItemIconAtlasBuilder.CellSize, ItemIconAtlasBuilder.CellSize));
+                assetManager.LoadSheet("Sprites/Items/weapons",WeaponVisualConstants.AtlasFrameSize,WeaponVisualConstants.AtlasFrameSize));
 
             ItemDatabase.RegisterCoreItems();
 
@@ -220,9 +220,9 @@ namespace Embervalle.Core
                             PlayerWASDMovement.SpawnCentered(player, vw, vh);
                             combat.ResetDemoTargets(vw, vh);
                             playerInventory = new PlayerInventory();
-                            quickAccess = new QuickAccessSlots();
-                            NewGameInventoryBootstrap.Apply(playerInventory, quickAccess);
-                            selectedQuickSlotIndex = 0;
+                            toolbar = new ToolbarSlots();
+                            NewGameInventoryBootstrap.Apply(playerInventory, toolbar);
+                            selectedToolbarSlotIndex = 0;
                             backpackOpen = false;
                             transferSource = null;
                             session.SetState(GameSessionState.InGame);
@@ -306,22 +306,29 @@ namespace Embervalle.Core
                 {
                     if (inputManager.SelectQuickSlot0JustPressed)
                     {
-                        selectedQuickSlotIndex = 0;
+                        selectedToolbarSlotIndex = 0;
                     }
 
                     if (inputManager.SelectQuickSlot1JustPressed)
                     {
-                        selectedQuickSlotIndex = 1;
+                        selectedToolbarSlotIndex = 1;
                     }
 
-                    PlayerWASDMovement.Tick(player, keyboardState, dt, vw, vh);
+                    // Movimento bloqueado durante swing melee (SDV: UsingTool=true / CanMove=false)
+                    if (!combat.IsPlayerMovementLocked)
+                    {
+                        PlayerWASDMovement.Tick(player, keyboardState, dt, vw, vh);
+                    }
+
+                    PlayerCardinalFacing combatFacing = playerAnim.GetCombatFacing(player.LastVelocity);
                     combat.Update(
                         player,
                         worldCamera,
                         inputManager,
                         dt,
-                        quickAccess,
-                        selectedQuickSlotIndex);
+                        toolbar,
+                        selectedToolbarSlotIndex,
+                        combatFacing);
 
                     var viewRect = new Rectangle(0, 0, vw, vh);
                     if (CompositeSpritePerformance.ShouldUpdateAnimation(viewRect, player.FeetPosition))
@@ -330,7 +337,10 @@ namespace Embervalle.Core
                             dt,
                             player.LastVelocity,
                             attacking: combat.IsAttackAnimationActive,
-                            usingTool: false);
+                            usingTool: false,
+                            attackFaceDirection: combat.IsMeleeSwingActive
+                                ? MeleeFacingVectors.ToWorldUnit(combat.MeleeSwingFacing)
+                                : null);
                     }
                 }
             }
@@ -373,7 +383,7 @@ namespace Embervalle.Core
                         SamplerState.PointClamp);
                     DrawPlayerCharacter();
                     DrawCombatDebug(vw, vh);
-                    DrawQuickAccessSlots(vh);
+                    DrawToolbarSlots(vh);
                     if (backpackOpen)
                     {
                         DrawBackpackPanel(vw, vh);
@@ -392,7 +402,7 @@ namespace Embervalle.Core
                         SamplerState.PointClamp);
                     DrawPlayerCharacter();
                     DrawCombatDebug(vw, vh);
-                    DrawQuickAccessSlots(vh);
+                    DrawToolbarSlots(vh);
                     if (backpackOpen)
                     {
                         DrawBackpackPanel(vw, vh);
@@ -414,21 +424,34 @@ namespace Embervalle.Core
 
         private void DrawPlayerCharacter()
         {
+            float baseDepth = worldRenderer.GetLayerDepth(player.FeetPosition.Y);
             if (playerComposite != null && compositeRenderer != null)
             {
-                float baseDepth = worldRenderer.GetLayerDepth(player.FeetPosition.Y);
                 compositeRenderer.Draw(spriteBatch, player.FeetPosition, playerComposite, baseDepth);
             }
             else if (playerSprite != null)
             {
                 worldRenderer.DrawEntity(spriteBatch, playerSprite, player.FeetPosition);
             }
+
+            if (combat.IsMeleeSwingActive)
+            {
+                MeleeSwingVisualRenderer.Draw(
+                    spriteBatch,
+                    EmbervalleSheets.WeaponIcons,
+                    combat.MeleeSwingWeaponIconFrame,
+                    player.FeetPosition,
+                    combat.MeleeSwingFacing,
+                    combat.MeleeSwingCurrentFrame,
+                    baseDepth,
+                    Color.White);
+            }
         }
 
         private void DrawCombatDebug(int viewportWidth, int viewportHeight)
         {
             Vector2 from = player.FeetPosition;
-            Vector2 to = combat.Aim.AimWorldPosition;
+            Vector2 to = combat.RangedAim.AimWorldPosition;
             Vector2 delta = to - from;
             float len = delta.Length();
             if (len > 1f)
@@ -475,19 +498,19 @@ namespace Embervalle.Core
         private void DrawGameplayHud(int viewportWidth, int viewportHeight)
         {
             string hud =
-                $"HP {player.Health:0}/{player.MaxHealth:0}  Mana {combat.Mana.Current:0}/{combat.Mana.Max:0}  X/C slot  LMB use  I bag  Q spell  Esc";
+                $"HP {player.Health:0}/{player.MaxHealth:0}  Mana {combat.Mana.Current:0}/{combat.Mana.Max:0}  X/C toolbar  LMB use item  I bag  Q spell  Esc";
             spriteBatch.DrawString(font, hud, new Vector2(8, viewportHeight - 52), Color.White * 0.9f);
         }
 
-        private void DrawQuickAccessSlots(int viewportHeight)
+        private void DrawToolbarSlots(int viewportHeight)
         {
-            for (int i = 0; i < QuickAccessSlots.SlotCountValue; i++)
+            for (int i = 0; i < ToolbarSlots.SlotCountValue; i++)
             {
                 Rectangle r = BackpackScreenLayout.QuickSlotRect(viewportHeight, i);
                 bool pickHl = transferSource.HasValue
-                    && ReferenceEquals(transferSource.Value.container, quickAccess)
+                    && ReferenceEquals(transferSource.Value.container, toolbar)
                     && transferSource.Value.index == i;
-                bool active = !backpackOpen && i == selectedQuickSlotIndex;
+                bool active = !backpackOpen && i == selectedToolbarSlotIndex;
                 Color fill = pickHl
                     ? Color.Lerp(Color.Cyan, Color.Black, 0.35f)
                     : active
@@ -495,7 +518,7 @@ namespace Embervalle.Core
                         : Color.Lerp(Color.Black, Color.White, 0.55f);
                 spriteBatch.Draw(pixel, r, fill * 0.65f);
 
-                ItemSlot slot = quickAccess.GetSlot(i);
+                ItemSlot slot = toolbar.GetSlot(i);
                 if (!slot.IsEmpty)
                 {
                     DrawItemSpriteInSlot(r, slot.Item);
@@ -600,7 +623,7 @@ namespace Embervalle.Core
                 return;
             }
 
-            IContainer targetContainer = gridHit != null ? playerInventory : quickAccess;
+            IContainer targetContainer = gridHit != null ? playerInventory : toolbar;
             int targetIndex = gridHit ?? quickHit!.Value;
 
             if (transferSource == null)
