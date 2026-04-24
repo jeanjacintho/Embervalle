@@ -19,5 +19,27 @@ namespace Embervalle.Core.Gameplay
         public float Health { get; set; } = 100f;
 
         public float MaxHealth { get; set; } = 100f;
+
+        public float HurtInvincibilityRemaining { get; set; }
+
+        public void UpdateHurtInvincibility(float deltaSeconds)
+        {
+            if (HurtInvincibilityRemaining > 0f)
+            {
+                HurtInvincibilityRemaining = System.MathF.Max(0f, HurtInvincibilityRemaining - deltaSeconds);
+            }
+        }
+
+        public bool TryApplyHurt(int damage, float invincibilitySeconds)
+        {
+            if (HurtInvincibilityRemaining > 0f)
+            {
+                return false;
+            }
+
+            Health = System.MathF.Max(0f, Health - damage);
+            HurtInvincibilityRemaining = invincibilitySeconds;
+            return true;
+        }
     }
 }

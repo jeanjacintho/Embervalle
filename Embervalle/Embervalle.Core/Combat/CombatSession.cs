@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Embervalle.Core.Combat.Hostile;
 using Embervalle.Core.Gameplay;
 using Embervalle.Core.Input;
 using Embervalle.Core.Inventory;
@@ -71,8 +72,30 @@ namespace Embervalle.Core.Combat
         public void ResetDemoTargets(int viewportWidth, int viewportHeight)
         {
             Enemies.Clear();
-            Enemies.Add(CombatEnemy.Create(1,new Vector2(viewportWidth * 0.25f, viewportHeight * 0.45f),800));
-            Enemies.Add(CombatEnemy.Create(2,new Vector2(viewportWidth * 0.72f, viewportHeight * 0.55f),800));
+            Vector2 slimePos = new Vector2(viewportWidth * 0.25f, viewportHeight * 0.45f);
+            Vector2 goblinPos = new Vector2(viewportWidth * 0.72f, viewportHeight * 0.55f);
+            Enemies.Add(
+                CombatEnemy.CreateHostile(
+                    1,
+                    slimePos,
+                    32,
+                    HostileEnemyProfile.Slime,
+                    new[]
+                    {
+                        slimePos + new Vector2(-70f, 0f),
+                        slimePos + new Vector2(70f, 0f),
+                    }));
+            Enemies.Add(
+                CombatEnemy.CreateHostile(
+                    2,
+                    goblinPos,
+                    60,
+                    HostileEnemyProfile.Goblin,
+                    new[]
+                    {
+                        goblinPos + new Vector2(0f, -60f),
+                        goblinPos + new Vector2(0f, 60f),
+                    }));
         }
 
         public void Update(
@@ -82,8 +105,11 @@ namespace Embervalle.Core.Combat
             float deltaSeconds,
             ToolbarSlots toolbar,
             int selectedToolbarSlotIndex,
-            PlayerCardinalFacing combatFacing)
+            PlayerCardinalFacing combatFacing,
+            int viewportWidth,
+            int viewportHeight)
         {
+            HostileEnemyAiSystem.Update(Enemies, player, viewportWidth, viewportHeight, false, deltaSeconds);
             Mana.Update(deltaSeconds);
             Cooldowns.Update(deltaSeconds);
             for (int i = 0; i < Enemies.Count; i++)

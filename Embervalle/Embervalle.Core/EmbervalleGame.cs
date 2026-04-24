@@ -307,7 +307,9 @@ namespace Embervalle.Core
                         dt,
                         toolbar,
                         selectedToolbarSlotIndex,
-                        combatFacing);
+                        combatFacing,
+                        vw,
+                        vh);
 
                     var viewRect = new Rectangle(0, 0, vw, vh);
                     if (CompositeSpritePerformance.ShouldUpdateAnimation(viewRect, player.FeetPosition))
@@ -446,7 +448,8 @@ namespace Embervalle.Core
                 CombatEnemy e = combat.Enemies[i];
                 Microsoft.Xna.Framework.Rectangle r = e.Hitbox.GetRect(e.FeetPosition);
                 spriteBatch.Draw(pixel, r, Color.Lerp(Color.Magenta, Color.Black, 0.35f) * 0.4f);
-                string label = $"HP {e.Health.Current}/{e.Health.Max}";
+                string state = e.IsHostileAi ? $" {e.HostileState}" : string.Empty;
+                string label = $"HP {e.Health.Current}/{e.Health.Max}{state}";
                 spriteBatch.DrawString(font, label, new Vector2(r.X, r.Y - 18), Color.White * 0.85f);
             }
 
