@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Controla o uso de itens da barra de ação: gerencia golpes corpo a corpo, carregamento de arco e consumíveis.</summary>
     public sealed class ToolbarCombatController
     {
         private readonly float[] _toolbarCooldownRemaining;
@@ -32,11 +33,13 @@ namespace Embervalle.Core.Combat
 
         private float _attackAnimTimer;
 
+        /// <summary>Inicializa temporizadores de arrefecimento por slot da barra de ferramentas.</summary>
         public ToolbarCombatController(int toolbarSlotCount)
         {
             _toolbarCooldownRemaining = new float[toolbarSlotCount];
         }
 
+        /// <summary>Indica fase de animação de ataque do corpo (fora do swing de melée puro).</summary>
         public bool IsAttackAnimationActive => _attackAnimTimer > 0f;
 
         public bool IsMeleeSwingActive => _swingActive;
@@ -47,8 +50,10 @@ namespace Embervalle.Core.Combat
 
         public int MeleeSwingWeaponIconFrame => _swingIconFrame;
 
+        /// <summary>Bloqueia movimento durante o arco e o follow-through.</summary>
         public bool IsMovementLocked => _swingActive || _followThroughTimer > 0f;
 
+        /// <summary>Direção de facing fixada para o sprite de ataque, se a animação o exigir.</summary>
         public Vector2? GetAttackSpriteFaceDirection()
         {
             if (_attackAnimTimer <= 0f || !_lockMeleeSpriteFacing)
@@ -59,12 +64,14 @@ namespace Embervalle.Core.Combat
             return MeleeFacingVectors.ToWorldUnit(_lockedSpriteFacing);
         }
 
+        /// <summary>Se a sobreposição de arma de melée deve aparecer (swing ativo ou lock de facing durante animação).</summary>
         public bool ShouldDrawMeleeWeaponOverlay =>
             _swingActive || (_lockMeleeSpriteFacing && _attackAnimTimer > 0f);
 
         public int GetMeleeWeaponOverlayFrame() =>
             Math.Min(_meleeWeaponDisplayFrame, MeleeSwingFrameTable.FrameCount - 1);
 
+        /// <summary>Atualiza arrefecimentos, animação de ataque, swing de melée, arco, consumíveis e projéteis.</summary>
         public void Update(
             float dt,
             PlayerBody player,

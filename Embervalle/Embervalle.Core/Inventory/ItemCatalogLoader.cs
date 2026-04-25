@@ -6,8 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Embervalle.Core.Inventory
 {
-    
-    
+    /// <summary>Carrega e valida o catálogo de itens a partir de um arquivo JSON ou string JSON em memória.</summary>
     public static class ItemCatalogLoader
     {
         private static readonly JsonSerializerOptions JsonOptions = new()

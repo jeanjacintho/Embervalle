@@ -1,6 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
-    
+    /// <summary>Container de armazenamento de um baú no mundo, com capacidade variável conforme o tipo.</summary>
     public sealed class ChestStorage : IContainer
     {
         public string ContainerId { get; }

@@ -3,24 +3,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Embervalle.Core.Input
 {
-    
-    
+    /// <summary>Estado de teclado/rato lido uma vez por frame, com bordas (just pressed) para ações de combate e toolbar.</summary>
     public sealed class InputManager
     {
         public Vector2 MousePosition { get; private set; }
-
         public bool SelectQuickSlot0JustPressed { get; private set; }
-
         public bool SelectQuickSlot1JustPressed { get; private set; }
-
         public bool AttackHeld { get; private set; }
-
         public bool AttackJustPressed { get; private set; }
-
         public bool AttackJustReleased { get; private set; }
-
         public bool Spell1JustPressed { get; private set; }
 
+        /// <summary>Atualiza posição do rato e bordas de teclas X, C, Q e botão esquerdo do rato (ataque).</summary>
         public void Update(
             KeyboardState keyboard,
             KeyboardState previousKeyboard,

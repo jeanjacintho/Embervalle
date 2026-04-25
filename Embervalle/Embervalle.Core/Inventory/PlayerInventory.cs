@@ -2,9 +2,9 @@ using Embervalle.Core.Events;
 
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Inventário principal do jogador com 30 slots e controle de peso máximo.</summary>
     public sealed class PlayerInventory : IContainer
     {
-        
         public const int MainSlots = 30;
 
         public const int TotalSlots = MainSlots;
@@ -19,6 +19,7 @@ namespace Embervalle.Core.Inventory
 
         public bool IsOverweight => CurrentWeight > MaxWeight;
 
+        /// <summary>Inicializa os slots e deixa o peso a zero.</summary>
         public PlayerInventory()
         {
             for (int i = 0; i < _slots.Length; i++)
@@ -33,6 +34,7 @@ namespace Embervalle.Core.Inventory
 
         public ItemSlot[] GetAllSlots() => _slots;
 
+        /// <summary>Tenta adicionar o stack respeitando o limite de peso; devolve quantidade que não coube.</summary>
         public int TryAdd(ItemInstance item)
         {
             UpdateWeight();
@@ -55,6 +57,7 @@ namespace Embervalle.Core.Inventory
 
         public int Count(string itemId) => ContainerHelpers.CountInSlots(_slots, itemId);
 
+        /// <summary>Recalcula o peso total a partir dos slots e publica o evento de peso.</summary>
         public void UpdateWeight()
         {
             CurrentWeight = 0f;
@@ -71,6 +74,7 @@ namespace Embervalle.Core.Inventory
             UpdateWeightPublished();
         }
 
+        /// <summary>Publica <see cref="InventoryWeightChangedEvent"/> com peso e limite atuais.</summary>
         private void UpdateWeightPublished()
         {
             EventBus.Publish(new InventoryWeightChangedEvent { Current = CurrentWeight, Max = MaxWeight });

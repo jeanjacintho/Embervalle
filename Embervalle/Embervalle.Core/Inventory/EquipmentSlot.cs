@@ -1,5 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Slot de equipamento tipado que valida se um item é compatível antes de aceitar.</summary>
     public sealed class EquipmentSlot
     {
         public EquipmentSlotType SlotType { get; }

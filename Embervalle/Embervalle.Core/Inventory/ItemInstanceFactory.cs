@@ -2,8 +2,7 @@ using System;
 
 namespace Embervalle.Core.Inventory
 {
-    
-    
+    /// <summary>Fábrica para criar instâncias de item a partir de um ID registrado no <see cref="ItemDatabase"/>.</summary>
     public static class ItemInstanceFactory
     {
         

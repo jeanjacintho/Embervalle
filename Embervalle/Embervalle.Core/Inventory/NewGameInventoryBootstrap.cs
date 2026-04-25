@@ -1,5 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Popula o inventário e a barra de ação com os itens iniciais de uma nova partida.</summary>
     public static class NewGameInventoryBootstrap
     {
         

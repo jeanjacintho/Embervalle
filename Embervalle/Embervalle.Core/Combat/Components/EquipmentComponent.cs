@@ -1,5 +1,6 @@
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Componente de equipamento de um personagem NPC: arma principal e até três slots de feitiço.</summary>
     public sealed class EquipmentComponent
     {
         public WeaponData MainHand { get; set; } = WeaponDefinitions.BasicSword;

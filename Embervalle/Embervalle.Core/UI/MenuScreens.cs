@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.UI
 {
+    /// <summary>Elemento clicado no menu principal.</summary>
     public enum MainMenuHit
     {
         None,
@@ -10,6 +11,7 @@ namespace Embervalle.Core.UI
         Exit,
     }
 
+    /// <summary>Elemento clicado no menu de pausa.</summary>
     public enum PauseMenuHit
     {
         None,
@@ -17,7 +19,7 @@ namespace Embervalle.Core.UI
         ExitToMainMenu,
     }
 
-    
+    /// <summary>Renderiza e faz hit-test nos menus principal e de pausa do jogo.</summary>
     public static class MenuScreens
     {
         private const int ButtonWidth = 320;
@@ -25,6 +27,7 @@ namespace Embervalle.Core.UI
         private const int ButtonGap = 18;
         private const float LabelScale = 2f;
 
+        /// <summary>Devolve o botão do menu principal sob o rato, ou <see cref="MainMenuHit.None"/>.</summary>
         public static MainMenuHit HitTestMainMenu(int viewportWidth, int viewportHeight, Point mouse)
         {
             LayoutMainMenu(viewportWidth, viewportHeight, out Rectangle newGame, out Rectangle exit);
@@ -41,6 +44,7 @@ namespace Embervalle.Core.UI
             return MainMenuHit.None;
         }
 
+        /// <summary>Devolve o botão do menu de pausa sob o rato, ou <see cref="PauseMenuHit.None"/>.</summary>
         public static PauseMenuHit HitTestPauseMenu(int viewportWidth, int viewportHeight, Point mouse)
         {
             LayoutPauseMenu(viewportWidth, viewportHeight, out Rectangle cont, out Rectangle exit);
@@ -57,6 +61,7 @@ namespace Embervalle.Core.UI
             return PauseMenuHit.None;
         }
 
+        /// <summary>Desenha o ecrã do menu principal (título e botões).</summary>
         public static void DrawMainMenu(
             SpriteBatch spriteBatch,
             SpriteFont font,
@@ -73,6 +78,7 @@ namespace Embervalle.Core.UI
             DrawButton(spriteBatch, font, pixel, exit, "Exit", mouse);
         }
 
+        /// <summary>Desenha o painel semitransparente e os botões do menu de pausa.</summary>
         public static void DrawPauseMenu(
             SpriteBatch spriteBatch,
             SpriteFont font,
@@ -81,7 +87,6 @@ namespace Embervalle.Core.UI
             int viewportHeight,
             Point mouse)
         {
-            
             int panelW = ButtonWidth + 80;
             int panelH = ButtonHeight * 2 + ButtonGap + 100;
             var panel = new Rectangle(
@@ -96,6 +101,7 @@ namespace Embervalle.Core.UI
             DrawButton(spriteBatch, font, pixel, exit, "Exit", mouse);
         }
 
+        /// <summary>Calcula retângulos de New Game e Exit centrados no viewport.</summary>
         private static void LayoutMainMenu(int vw, int vh, out Rectangle newGame, out Rectangle exit)
         {
             int x = (vw - ButtonWidth) / 2;
@@ -104,6 +110,7 @@ namespace Embervalle.Core.UI
             exit = new Rectangle(x, centerY + ButtonGap / 2, ButtonWidth, ButtonHeight);
         }
 
+        /// <summary>Calcula retângulos de Continue e Exit ao centro do ecrã.</summary>
         private static void LayoutPauseMenu(int vw, int vh, out Rectangle cont, out Rectangle exit)
         {
             int x = (vw - ButtonWidth) / 2;
@@ -112,6 +119,7 @@ namespace Embervalle.Core.UI
             exit = new Rectangle(x, centerY + ButtonGap / 2, ButtonWidth, ButtonHeight);
         }
 
+        /// <summary>Desenha o título escalado no topo do ecrã.</summary>
         private static void DrawTitle(SpriteBatch spriteBatch, SpriteFont font, int viewportWidth, string title)
         {
             Vector2 size = font.MeasureString(title) * LabelScale;
@@ -119,6 +127,7 @@ namespace Embervalle.Core.UI
             spriteBatch.DrawString(font, title, pos, Color.White, 0f, Vector2.Zero, LabelScale, SpriteEffects.None, 0f);
         }
 
+        /// <summary>Desenha um botão com realce ao hover e texto centrado.</summary>
         private static void DrawButton(
             SpriteBatch spriteBatch,
             SpriteFont font,
@@ -150,6 +159,7 @@ namespace Embervalle.Core.UI
                 0f);
         }
 
+        /// <summary>Desenha o contorno de um retângulo com espessura em pixels.</summary>
         private static void DrawRectOutline(SpriteBatch spriteBatch, Texture2D pixel, Rectangle rect, Color color, int thickness)
         {
             spriteBatch.Draw(pixel, new Rectangle(rect.X, rect.Y, rect.Width, thickness), color);

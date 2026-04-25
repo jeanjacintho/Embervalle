@@ -3,17 +3,13 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Sprites
 {
-    
+    /// <summary>Escolhe idle/walk/attack conforme movimento, prioridade a direção de ataque e mapeia para <see cref="CharacterAnimationId"/>.</summary>
     public sealed class PlayerSpriteAnimationController
     {
         private readonly ILocomotionAnimationTarget _target;
-
         private Direction _facing = Direction.Down;
 
-        public PlayerSpriteAnimationController(ILocomotionAnimationTarget target)
-        {
-            _target = target;
-        }
+        public PlayerSpriteAnimationController(ILocomotionAnimationTarget target) => _target = target;
 
         private enum Direction
         {
@@ -23,7 +19,6 @@ namespace Embervalle.Core.Sprites
             Right,
         }
 
-        
         public PlayerCardinalFacing GetCombatFacing(Vector2 velocity)
         {
             bool isMoving = velocity.LengthSquared() > 0.0001f;

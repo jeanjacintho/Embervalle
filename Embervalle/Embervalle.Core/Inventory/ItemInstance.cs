@@ -1,6 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
-    
+    /// <summary>Instância de um item no jogo com quantidade, qualidade, durabilidade e estado de frescor.</summary>
     public sealed class ItemInstance
     {
         public required string ItemId { get; set; }

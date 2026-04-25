@@ -2,7 +2,7 @@ using Embervalle.Core.Events;
 
 namespace Embervalle.Core.Inventory
 {
-    
+    /// <summary>Sistema de deterioração de itens perecíveis: reduz o frescor a cada tick e estraga o item ao expirar.</summary>
     public static class ItemFreshnessSystem
     {
         public static void TickFreshness(IContainer container)

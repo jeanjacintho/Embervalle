@@ -5,18 +5,21 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Sistema de lançamento de feitiços: verifica mana e recarga, despacha projéteis ou ataques de área.</summary>
     public sealed class SpellCastSystem
     {
         private readonly ProjectilePool _pool;
 
         private readonly int _playerOwnerId;
 
+        /// <summary>Usa o pool dado e o id de dono para projéteis do jogador.</summary>
         public SpellCastSystem(ProjectilePool pool, int playerOwnerId)
         {
             _pool = pool;
             _playerOwnerId = playerOwnerId;
         }
 
+        /// <summary>Se mana e recarga permitirem, aplica o feitiço (projétil, melée de área, etc.) e publica <see cref="SpellCastEvent"/>.</summary>
         public bool TryCast(
             SpellData spell,
             Vector2 casterFeetPosition,
@@ -86,12 +89,14 @@ namespace Embervalle.Core.Combat
             return true;
         }
 
+        /// <summary>Placeholder para feitiço de área fixa no chão.</summary>
         private static void ApplyAreaFixed(Vector2 aimWorldPos, SpellData spell)
         {
             _ = aimWorldPos;
             _ = spell;
         }
 
+        /// <summary>Cria um <see cref="WeaponData"/> sintético para reutilizar <see cref="MeleeCombat.ExecuteMeleeAttack"/>.</summary>
         private static WeaponData CreateAreaMeleeWeapon(SpellData spell)
         {
             return new WeaponData

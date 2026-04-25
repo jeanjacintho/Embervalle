@@ -3,10 +3,12 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat.Hostile
 {
-    
+    /// <summary>Regras de visão e audição; linha de visão plena via <see cref="HasLineOfSightSimple"/> até haver mapa de colisão.</summary>
     public static class EnemyPerception
     {
-        
+        /// <summary>Verifica distância, FOV, cone e (stub) linha de visão.</summary>
+        /// <param name="facingDirectionNormalized">Direção frontal do inimigo (define o cone de FOV).</param>
+        /// <param name="hasClearLineOfSight">Falso se houver parede sólida entre inimigo e jogador (hoje: stub).</param>
         public static bool IsPlayerVisible(
             Vector2 enemyFeet,
             Vector2 facingDirectionNormalized,
@@ -42,6 +44,8 @@ namespace Embervalle.Core.Combat.Hostile
             return hasClearLineOfSight;
         }
 
+        /// <summary>Verifica se o jogador está dentro do alcance de audição, com penalização se não estiver a correr.</summary>
+        /// <param name="playerIsRunning">Se verdadeiro, usa o alcance de audição completo do perfil.</param>
         public static bool IsPlayerHeard(
             Vector2 enemyFeet,
             Vector2 playerFeet,
@@ -54,9 +58,10 @@ namespace Embervalle.Core.Combat.Hostile
             return Vector2.Distance(enemyFeet, playerFeet) < hearRange;
         }
 
-        public static bool HasLineOfSightSimple(Vector2 fromFeet, Vector2 toFeet) =>
-            true;
+        /// <summary>Substituir por raycast de tiles quando o mapa de combate estiver integrado.</summary>
+        public static bool HasLineOfSightSimple(Vector2 fromFeet, Vector2 toFeet) => true;
 
+        /// <summary>Ângulo entre duas direções (vetores) em radianos [0, π].</summary>
         public static float AngleBetweenRadians(Vector2 aDir, Vector2 bDir)
         {
             float al = aDir.Length();

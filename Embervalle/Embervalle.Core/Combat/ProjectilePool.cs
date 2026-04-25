@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Tipo de projétil: flecha ou projétil de feitiço.</summary>
     public enum ProjectileKind
     {
         Arrow,
         Spell,
     }
 
+    /// <summary>Estado mutável de um projétil ativo no pool: posição, direção, velocidade e dano.</summary>
     public sealed class ProjectileState
     {
         public bool IsActive;
@@ -33,6 +35,7 @@ namespace Embervalle.Core.Combat
 
         public SpellData? SpellData;
 
+        /// <summary>Limpa o projétil ativo e repõe a distância percorrida.</summary>
         public void Reset()
         {
             IsActive = false;
@@ -41,12 +44,13 @@ namespace Embervalle.Core.Combat
         }
     }
 
-    
+    /// <summary>Pool de projéteis de tamanho fixo que reutiliza instâncias para evitar alocações durante o combate.</summary>
     public sealed class ProjectilePool
     {
         private readonly ProjectileState[] _slots;
         private readonly int _capacity;
 
+        /// <summary>Aloca o array de <see cref="ProjectileState"/> reutilizáveis.</summary>
         public ProjectilePool(int capacity = 64)
         {
             _capacity = capacity;
@@ -59,7 +63,7 @@ namespace Embervalle.Core.Combat
 
         public ReadOnlySpan<ProjectileState> AllSlots => _slots.AsSpan(0, _capacity);
 
-        
+        /// <summary>Reutiliza o primeiro slot livre; devolve null se o pool estiver cheio.</summary>
         public ProjectileState? Spawn(
             Vector2 origin,
             Vector2 directionNormalized,
@@ -96,6 +100,7 @@ namespace Embervalle.Core.Combat
             return null;
         }
 
+        /// <summary>Reinicia o slot associado ao estado (chama <see cref="ProjectileState.Reset"/>).</summary>
         public void Deactivate(ProjectileState p)
         {
             p.Reset();

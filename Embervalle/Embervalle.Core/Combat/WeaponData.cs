@@ -1,6 +1,6 @@
 namespace Embervalle.Core.Combat
 {
-    
+    /// <summary>Dados imutáveis de uma arma: tipo, dano, alcance, recuo e parâmetros de arco ou projétil.</summary>
     public sealed class WeaponData
     {
         public required string Id { get; init; }
@@ -9,10 +9,8 @@ namespace Embervalle.Core.Combat
 
         public int Damage { get; init; }
 
-        
         public float Range { get; init; }
 
-        
         public float ArcHalfAngleRadians { get; init; }
 
         public float Knockback { get; init; }

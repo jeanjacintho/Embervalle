@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Sprites
 {
+    /// <summary>Textura de sprites cortada em grelha de tamanho fixo (largura × altura por frame).</summary>
     public sealed class SpriteSheet
     {
         private readonly Texture2D _texture;
@@ -10,6 +11,7 @@ namespace Embervalle.Core.Sprites
         private readonly int _frameHeight;
         private readonly int _columns;
 
+        /// <summary>Encapsula a textura e deriva o número de colunas pelo tamanho do frame.</summary>
         public SpriteSheet(Texture2D texture, int frameWidth, int frameHeight)
         {
             _texture = texture;
@@ -19,12 +21,10 @@ namespace Embervalle.Core.Sprites
         }
 
         public Texture2D Texture => _texture;
-
         public int FrameWidth => _frameWidth;
-
         public int FrameHeight => _frameHeight;
 
-        
+        /// <summary>Região do frame numa grelha line-ar (esquerda para direita, de cima para baixo).</summary>
         public Rectangle GetFrame(int frameIndex)
         {
             int col = frameIndex % _columns;
@@ -36,14 +36,12 @@ namespace Embervalle.Core.Sprites
                 _frameHeight);
         }
 
-        
-        public Rectangle GetFrameAtGrid(int row, int col)
-        {
-            return new Rectangle(
+        /// <summary>Região do frame na linha e coluna da grelha (0-based).</summary>
+        public Rectangle GetFrameAtGrid(int row, int col) =>
+            new Rectangle(
                 col * _frameWidth,
                 row * _frameHeight,
                 _frameWidth,
                 _frameHeight);
-        }
     }
 }

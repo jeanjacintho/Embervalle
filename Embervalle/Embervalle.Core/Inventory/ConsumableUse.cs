@@ -3,6 +3,7 @@ using Embervalle.Core.Gameplay;
 
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Aplica o efeito de cura de um item consumível ao jogador e o remove do slot.</summary>
     public static class ConsumableUse
     {
         public static bool TryUse(ItemSlot slot, PlayerBody player)

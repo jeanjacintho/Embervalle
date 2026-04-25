@@ -2,6 +2,7 @@ using System;
 
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Utilitários internos de baixo nível para operações em arrays de <see cref="ItemSlot"/>.</summary>
     internal static class ContainerHelpers
     {
         public static bool TryRemoveFromSlots(ItemSlot[] slots, string itemId, int qty)

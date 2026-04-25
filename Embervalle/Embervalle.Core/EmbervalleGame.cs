@@ -157,7 +157,7 @@ namespace Embervalle.Core
             MouseState prevMouseState = previousMouseState;
 
             bool escapeJustPressed = keyboardState.IsKeyDown(Keys.Escape) && prevKeyboardState.IsKeyUp(Keys.Escape);
-            bool iJustPressed = eyboardState.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I);
+            bool iJustPressed = keyboardState.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I);
             bool rightClick = mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released;
             bool backJustPressed = gamePadState.Buttons.Back == ButtonState.Pressed && prevGamePadState.Buttons.Back == ButtonState.Released;
 

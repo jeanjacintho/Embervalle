@@ -2,24 +2,20 @@ using System;
 
 namespace Embervalle.Core.Sprites
 {
-    
-    
+    /// <summary>Sequência de índices numa <see cref="SpriteSheet"/>, duração por frame, loop e flip opcional.</summary>
     public sealed class Animation
     {
         public string Name { get; init; } = "";
-
         public int[] Frames { get; init; } = Array.Empty<int>();
-
         public float FrameDuration { get; init; }
-
         public bool Loop { get; init; }
-
         public bool FlipHorizontal { get; init; }
 
         private float _timer;
         private int _frameIndex;
         private bool _finished;
 
+        /// <summary>Fábrica de template com nome, frames, duração, loop e flip.</summary>
         public static Animation CreateTemplate(
             string name,
             int[] frames,
@@ -37,7 +33,7 @@ namespace Embervalle.Core.Sprites
             };
         }
 
-        
+        /// <summary>Cópia com contadores de reprodução repostos (nova instância executável).</summary>
         public Animation CloneAndReset()
         {
             return new Animation
@@ -50,10 +46,13 @@ namespace Embervalle.Core.Sprites
             };
         }
 
+        /// <summary>Índice na folha do frame atual.</summary>
         public int CurrentSheetFrameIndex => Frames.Length == 0 ? 0 : Frames[_frameIndex];
 
+        /// <summary>Verdadeiro quando a animação não faz loop e chegou ao fim.</summary>
         public bool IsFinished => !Loop && _finished;
 
+        /// <summary>Avança o relógio interno e o índice de frame consoante a duração.</summary>
         public void Update(float deltaTime)
         {
             if (Frames.Length == 0 || FrameDuration <= 0f)
@@ -86,6 +85,7 @@ namespace Embervalle.Core.Sprites
             }
         }
 
+        /// <summary>Reinicia o temporizador e o índice de frame (mantém definição de frames).</summary>
         public void Reset()
         {
             _timer = 0f;

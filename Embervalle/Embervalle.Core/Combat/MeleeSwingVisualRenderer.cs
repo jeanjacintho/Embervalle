@@ -4,10 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Combat
 {
-    
-    
+    /// <summary>Renderiza o sprite da arma durante a animação de golpe corpo a corpo com base na tabela de frames.</summary>
     public static class MeleeSwingVisualRenderer
     {
+        /// <summary>Desenha o frame da arma a partir de <see cref="MeleeSwingFrameTable"/> e do ícone no atlas.</summary>
         public static void Draw(
             SpriteBatch spriteBatch,
             SpriteSheet weaponSheet,
@@ -22,7 +22,6 @@ namespace Embervalle.Core.Combat
 
             Rectangle src = weaponSheet.GetFrame(weaponIconFrameIndex);
 
-            
             var origin = new Vector2(src.Width * 0.5f, src.Height * 0.82f);
 
             Vector2 pos = feetWorldPosition + fd.Offset;

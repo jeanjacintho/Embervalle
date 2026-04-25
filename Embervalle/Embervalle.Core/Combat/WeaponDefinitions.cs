@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Catálogo estático de todas as armas definidas no jogo, indexadas por ID.</summary>
     public static class WeaponDefinitions
     {
         private static readonly Dictionary<string, WeaponData> ById = new();
 
+        /// <summary>Regista as armas predefinidas no dicionário estático.</summary>
         static WeaponDefinitions()
         {
             Register(BasicSword);
@@ -14,8 +16,10 @@ namespace Embervalle.Core.Combat
             Register(ShortBow);
         }
 
+        /// <summary>Adiciona ou substitui a entrada pelo id da arma.</summary>
         private static void Register(WeaponData weapon) => ById[weapon.Id] = weapon;
 
+        /// <summary>Resolve a definição de arma por id ou null se não existir.</summary>
         public static WeaponData? TryGet(string id) =>
             ById.TryGetValue(id, out WeaponData? w) ? w : null;
 

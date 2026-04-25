@@ -3,6 +3,7 @@ using System;
 
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Componente de vida de um personagem: pontos atuais, máximos e timer de invencibilidade pós-dano.</summary>
     public sealed class HealthComponent
     {
         public int Current { get; set; }
@@ -13,7 +14,7 @@ namespace Embervalle.Core.Combat
 
         public bool IsInvincible => InvincibilityTimer > 0f;
 
-        
+        /// <summary>Subtrai vida, opcionalmente inicia janela de invencibilidade e publica <see cref="DamageTakenEvent"/>.</summary>
         public void TakeDamage(int amount, float invincDuration = 0.5f, bool ignoreInvincibility = false)
         {
             if (!ignoreInvincibility && IsInvincible)
@@ -30,6 +31,7 @@ namespace Embervalle.Core.Combat
             EventBus.Publish(new DamageTakenEvent { Amount = amount });
         }
 
+        /// <summary>Decrementa o temporizador de invencibilidade após o frame.</summary>
         public void UpdateInvincibility(float deltaSeconds)
         {
             if (InvincibilityTimer > 0f)

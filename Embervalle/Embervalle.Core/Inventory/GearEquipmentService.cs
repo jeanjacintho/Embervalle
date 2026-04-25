@@ -2,6 +2,7 @@ using Embervalle.Core.Events;
 
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Serviço estático para equipar e desequipar itens entre o inventário e os slots de equipamento.</summary>
     public static class GearEquipmentService
     {
         public static bool EquipFromInventory(

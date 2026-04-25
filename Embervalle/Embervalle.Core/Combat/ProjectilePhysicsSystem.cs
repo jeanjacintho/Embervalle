@@ -5,16 +5,18 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
-    
+    /// <summary>Atualiza a física de todos os projéteis ativos: movimento, gravidade, colisão com inimigos e expiração por alcance.</summary>
     public sealed class ProjectilePhysicsSystem
     {
         private readonly ProjectilePool _pool;
 
+        /// <summary>Atua sobre o pool de projéteis fornecido.</summary>
         public ProjectilePhysicsSystem(ProjectilePool pool)
         {
             _pool = pool;
         }
 
+        /// <summary>Move projéteis, resolve impactos, remove ao atingir alcance e publica <see cref="ArrowExpiredEvent"/>.</summary>
         public void Update(IReadOnlyList<CombatEnemy> enemies, float deltaSeconds)
         {
             ReadOnlySpan<ProjectileState> slots = _pool.AllSlots;

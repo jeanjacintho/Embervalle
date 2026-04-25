@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Sprites
 {
-    
-    
+    /// <summary>Desenha entidades de sprite no mundo, profundidade por Y (ordem) e sombra de elipse simples.</summary>
     public sealed class WorldSpriteRenderer
     {
         private readonly Texture2D _pixel;
@@ -16,15 +15,9 @@ namespace Embervalle.Core.Sprites
             _mapHeightPixels = MathHelper.Max(1f, mapHeightPixels);
         }
 
-        public void SetMapHeight(float mapHeightPixels)
-        {
-            _mapHeightPixels = MathHelper.Max(1f, mapHeightPixels);
-        }
+        public void SetMapHeight(float mapHeightPixels) => _mapHeightPixels = MathHelper.Max(1f, mapHeightPixels);
 
-        public float GetLayerDepth(float feetWorldY)
-        {
-            return MathHelper.Clamp(1f - feetWorldY / _mapHeightPixels, 0f, 1f);
-        }
+        public float GetLayerDepth(float feetWorldY) => MathHelper.Clamp(1f - feetWorldY / _mapHeightPixels, 0f, 1f);
 
         public void DrawEntity(SpriteBatch spriteBatch, SpriteComponent sprite, Vector2 feetWorldPosition)
         {
@@ -34,7 +27,6 @@ namespace Embervalle.Core.Sprites
             }
 
             float depth = GetLayerDepth(feetWorldPosition.Y);
-
             SpriteEffects effects = sprite.Effects;
             if (sprite.CurrentAnimation.FlipHorizontal)
             {
@@ -51,14 +43,12 @@ namespace Embervalle.Core.Sprites
                 sprite.Scale,
                 effects,
                 depth);
-
             DrawShadow(spriteBatch, feetWorldPosition, depth);
         }
 
         private void DrawShadow(SpriteBatch spriteBatch, Vector2 feet, float entityDepth)
         {
             float shadowDepth = MathHelper.Clamp(entityDepth - 0.02f, 0f, 1f);
-            
             Vector2 shadowCenter = feet + new Vector2(0f, 2f);
             spriteBatch.Draw(
                 _pixel,

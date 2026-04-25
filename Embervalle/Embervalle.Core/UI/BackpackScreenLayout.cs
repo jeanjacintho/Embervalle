@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.UI
 {
-    
+    /// <summary>Calcula layout, hit-test e retângulos de células da grade de inventário e dos slots rápidos da mochila.</summary>
     public static class BackpackScreenLayout
     {
         public const int GridColumns = 6;
@@ -13,6 +13,7 @@ namespace Embervalle.Core.UI
 
         public const int CellGap = 4;
 
+        /// <summary>Canto superior esquerdo da grelha de inventário, centrado na horizontal.</summary>
         public static Vector2 GridTopLeft(int viewportWidth, int viewportHeight)
         {
             int gridW = GridColumns * (CellSize + CellGap) - CellGap;
@@ -21,7 +22,7 @@ namespace Embervalle.Core.UI
             return new Vector2(x, y);
         }
 
-        
+        /// <summary>Se o ponto estiver numa célula da grelha, devolve o índice linear; senão null.</summary>
         public static int? HitTestGrid(int viewportWidth, int viewportHeight, Point mouse)
         {
             Vector2 origin = GridTopLeft(viewportWidth, viewportHeight);
@@ -50,6 +51,7 @@ namespace Embervalle.Core.UI
             return row * GridColumns + col;
         }
 
+        /// <summary>Retângulo em ecrã da célula de inventário pelo índice (row-major).</summary>
         public static Rectangle GridCellRect(int viewportWidth, int viewportHeight, int slotIndex)
         {
             Vector2 origin = GridTopLeft(viewportWidth, viewportHeight);
@@ -63,7 +65,7 @@ namespace Embervalle.Core.UI
                 CellSize);
         }
 
-        
+        /// <summary>Retângulo do slot rápido (toolbar) na borda inferior esquerda.</summary>
         public static Rectangle QuickSlotRect(int viewportHeight, int slotIndex)
         {
             int stride = CellSize + CellGap;
@@ -72,6 +74,7 @@ namespace Embervalle.Core.UI
             return new Rectangle(x, y, CellSize, CellSize);
         }
 
+        /// <summary>Se o ponto estiver num slot rápido (0 ou 1), devolve o índice; senão null.</summary>
         public static int? HitTestQuickSlot(int viewportHeight, Point mouse)
         {
             for (int i = 0; i < 2; i++)

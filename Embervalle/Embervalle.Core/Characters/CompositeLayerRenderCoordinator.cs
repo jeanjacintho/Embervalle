@@ -4,12 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Characters
 {
-    
-    
+    /// <summary>Coordena a renderização de múltiplos personagens compostos por passagem de camada, garantindo ordem de depth correta.</summary>
     public static class CompositeLayerRenderCoordinator
     {
+        /// <summary>Dados de uma instância de personagem composto para submissão ao renderizador de camadas.</summary>
         public readonly struct CompositeDrawInstance
         {
+            /// <summary>Encapsula composto, posição dos pés e depth base para desenho.</summary>
             public CompositeDrawInstance(CompositeCharacterComponent composite, Vector2 feetWorldPosition, float baseLayerDepth)
             {
                 Composite = composite;
@@ -24,7 +25,7 @@ namespace Embervalle.Core.Characters
             public float BaseLayerDepth { get; }
         }
 
-        
+        /// <summary>Desenha todas as instâncias por passagem de slot: primeiro todas as pernas, depois tronco, etc., para intercalar corretamente entre inimigos.</summary>
         public static void DrawAllByLayerPass(
             SpriteBatch spriteBatch,
             IReadOnlyList<CompositeDrawInstance> instances,

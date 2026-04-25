@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
+using Embervalle.Core.Combat;
 using Embervalle.Core.Events;
 using Embervalle.Core.Gameplay;
 using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat.Hostile
 {
+    /// <summary>FSM de inimigos hostis: patrulha, alerta, perseguição, ataque, busca, fuga (movimento linear ao alvo).</summary>
     public static class HostileEnemyAiSystem
     {
         private const float ArrivedWaypointEps = 6f;
         private const float SearchArrivedEps = 10f;
         private const float FleeReturnRangeScale = 1.3f;
 
+        /// <summary>Atualiza invencibilidade do jogador e a IA de cada inimigo com <see cref="CombatEnemy.IsHostileAi"/>.</summary>
+        /// <param name="playerIsRunning">Afeta o alcance de <see cref="EnemyPerception.IsPlayerHeard"/>.</param>
         public static void Update(
             List<CombatEnemy> enemies,
             PlayerBody player,
@@ -77,15 +81,7 @@ namespace Embervalle.Core.Combat.Hostile
                     UpdateAlert(e, p, seen, player, viewportWidth, viewportHeight, dt);
                     break;
                 case HostileEnemyState.Chase:
-                    UpdateChase(
-                        e,
-                        p,
-                        seen,
-                        heard,
-                        player,
-                        viewportWidth,
-                        viewportHeight,
-                        dt);
+                    UpdateChase(e, p, seen, heard, player, viewportWidth, viewportHeight, dt);
                     break;
                 case HostileEnemyState.Attack:
                     UpdateAttack(e, p, seen, player, viewportWidth, viewportHeight, dt);
@@ -99,6 +95,7 @@ namespace Embervalle.Core.Combat.Hostile
             }
         }
 
+        /// <summary>Waypoints, espera no ponto, deteção = Chase ou som = Alert.</summary>
         private static void UpdatePatrol(
             CombatEnemy e,
             in HostileEnemyProfile p,
@@ -146,9 +143,10 @@ namespace Embervalle.Core.Combat.Hostile
                 return;
             }
 
-            MoveAlongDelta(e, d, p.MoveSpeedPixelsPerSecond, dt, viewportWidth, viewportHeight, updateFacing: true);
+            MoveAlongDelta(e, d, p.MoveSpeedPixelsPerSecond, dt, viewportWidth, viewportHeight, true);
         }
 
+        /// <summary>Aproxima-se da última posição; breve janela antes de passar a Search.</summary>
         private static void UpdateAlert(
             CombatEnemy e,
             in HostileEnemyProfile p,
@@ -185,13 +183,14 @@ namespace Embervalle.Core.Combat.Hostile
             }
 
             float speed = p.MoveSpeedPixelsPerSecond * 0.9f;
-            MoveAlongDelta(e, d, speed, dt, viewportWidth, viewportHeight, updateFacing: true);
+            MoveAlongDelta(e, d, speed, dt, viewportWidth, viewportHeight, true);
             if (e.AlertTimer <= 0f)
             {
                 e.HostileState = HostileEnemyState.Search;
             }
         }
 
+        /// <summary>Perde alvo = Search; se perto e à frente = Attack.</summary>
         private static void UpdateChase(
             CombatEnemy e,
             in HostileEnemyProfile p,
@@ -232,9 +231,10 @@ namespace Embervalle.Core.Combat.Hostile
             }
 
             Vector2 d = player.FeetPosition - e.FeetPosition;
-            MoveAlongDelta(e, d, p.MoveSpeedPixelsPerSecond, dt, viewportWidth, viewportHeight, updateFacing: false);
+            MoveAlongDelta(e, d, p.MoveSpeedPixelsPerSecond, dt, viewportWidth, viewportHeight, false);
         }
 
+        /// <summary>Dano + cooldown; publica <see cref="DamageTakenEvent"/>.</summary>
         private static void UpdateAttack(
             CombatEnemy e,
             in HostileEnemyProfile p,
@@ -271,6 +271,7 @@ namespace Embervalle.Core.Combat.Hostile
             }
         }
 
+        /// <summary>Desloca à última posição; rota "olhar" e volta a <see cref="HostileEnemyState.Patrol"/>.</summary>
         private static void UpdateSearch(
             CombatEnemy e,
             in HostileEnemyProfile p,
@@ -314,10 +315,11 @@ namespace Embervalle.Core.Combat.Hostile
                     dt,
                     viewportWidth,
                     viewportHeight,
-                    updateFacing: true);
+                    true);
             }
         }
 
+        /// <summary>Corre no sentido oposto ao jogador até ganhar distância, depois patrulha.</summary>
         private static void UpdateFlee(
             CombatEnemy e,
             in HostileEnemyProfile p,
@@ -394,19 +396,10 @@ namespace Embervalle.Core.Combat.Hostile
             CombatEnemyAiShared.ClampFeetToViewport(e, viewportWidth, viewportHeight);
         }
 
-        private static void SetFacingToward(CombatEnemy e, Vector2 target)
-        {
+        private static void SetFacingToward(CombatEnemy e, Vector2 target) =>
             e.FacingDirection = SafeNormalize(target - e.FeetPosition);
-        }
 
-        private static Vector2 SafeNormalize(Vector2 v)
-        {
-            if (v.LengthSquared() < 1e-4f)
-            {
-                return Vector2.UnitY;
-            }
-
-            return Vector2.Normalize(v);
-        }
+        private static Vector2 SafeNormalize(Vector2 v) =>
+            v.LengthSquared() < 1e-4f ? Vector2.UnitY : Vector2.Normalize(v);
     }
 }

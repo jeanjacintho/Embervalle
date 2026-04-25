@@ -2,6 +2,7 @@ using System;
 
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Slot individual de um container que pode conter uma única <see cref="ItemInstance"/>.</summary>
     public sealed class ItemSlot
     {
         public ItemInstance? Item { get; set; }

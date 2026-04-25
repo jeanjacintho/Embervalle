@@ -3,7 +3,7 @@ using Embervalle.Core.Events;
 
 namespace Embervalle.Core.Inventory
 {
-    
+    /// <summary>Sistema estático para mover itens entre slots de qualquer par de containers, com suporte a empilhamento e troca.</summary>
     public static class TransferSystem
     {
         public static TransferResult Transfer(

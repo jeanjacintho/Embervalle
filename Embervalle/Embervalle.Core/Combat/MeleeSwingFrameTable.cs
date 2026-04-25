@@ -4,18 +4,19 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Combat
 {
-    
-    
+    /// <summary>Tabela de dados por frame da animação de golpe corpo a corpo: offset, rotação e hitbox para cada direção cardinal.</summary>
     public static class MeleeSwingFrameTable
     {
         public const int FrameCount = 6;
 
+        /// <summary>Dados de posicionamento e rotação do sprite de arma para um único frame do golpe.</summary>
         public readonly struct FrameData
         {
             public readonly Vector2 Offset;
             public readonly float Rotation;
             public readonly SpriteEffects Fx;
 
+            /// <summary>Constrói dados de frame com offset, rotação (radianos) e flip opcional.</summary>
             public FrameData(float ox, float oy, float rot, SpriteEffects fx = SpriteEffects.None)
             {
                 Offset = new Vector2(ox, oy);
@@ -24,7 +25,6 @@ namespace Embervalle.Core.Combat
             }
         }
 
-        
         private static readonly FrameData[] _facingUp =
         {
             new(-8f,  -60f,  -1.963f),   
@@ -65,6 +65,7 @@ namespace Embervalle.Core.Combat
             new( -2f,   -2f, -2.356f, SpriteEffects.FlipHorizontally),
         };
 
+        /// <summary>Obtém offset, rotação e <see cref="SpriteEffects"/> do frame de golpe para a direção cardinal.</summary>
         public static FrameData Get(PlayerCardinalFacing facing, int frame)
         {
             FrameData[] table = facing switch
@@ -79,12 +80,10 @@ namespace Embervalle.Core.Combat
             return table[f];
         }
 
-        
+        /// <summary>Retângulo aproximado de hitbox de melée em torno do offset do frame.</summary>
         public static Rectangle GetHitbox(PlayerCardinalFacing facing, int frame, Vector2 feet)
         {
             FrameData fd = Get(facing, frame);
-            
-            
             Vector2 center = feet + fd.Offset;
             const int hw = 24;
             const int hh = 24;

@@ -2,8 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat.Hostile
 {
+    /// <summary>Utilitários compartilhados pela IA hostil (limites de arena).</summary>
     internal static class CombatEnemyAiShared
     {
+        /// <summary>Mantém os pés do inimigo dentro do retângulo jogável, com base no hitbox.</summary>
         public static void ClampFeetToViewport(CombatEnemy e, int viewportWidth, int viewportHeight)
         {
             Vector2 o = e.Hitbox.OriginOffset;

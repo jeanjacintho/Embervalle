@@ -4,10 +4,10 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Lógica de combate corpo a corpo: detecção de inimigos em arco e aplicação de dano por frame.</summary>
     public static class MeleeCombat
     {
-        
-        
+        /// <summary>Aplica dano e repulsão a inimigos dentro do arco e alcance da arma em torno da origem.</summary>
         public static void ExecuteMeleeAttack(
             Vector2 origin,
             Vector2 aimDirNormalized,
@@ -50,7 +50,7 @@ namespace Embervalle.Core.Combat
             }
         }
 
-        
+        /// <summary>Testa interseção do hitbox do frame com inimigos, evitando múltiplos hits no mesmo swing por id.</summary>
         public static void ApplyFrameHit(
             Rectangle hitbox,
             WeaponData weapon,
@@ -89,6 +89,7 @@ namespace Embervalle.Core.Combat
             }
         }
 
+        /// <summary>Desloca ligeiramente o inimigo na direção indicada (empurrão após o golpe).</summary>
         private static void ApplyKnockback(CombatEnemy enemy, Vector2 aimDir, float knockback)
         {
             if (knockback <= 0f)

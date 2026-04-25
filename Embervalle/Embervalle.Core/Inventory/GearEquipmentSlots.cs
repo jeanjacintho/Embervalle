@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Inventory
 {
-    
+    /// <summary>Conjunto completo de slots de equipamento de um personagem (mãos, armadura, acessórios).</summary>
     public sealed class GearEquipmentSlots
     {
         public EquipmentSlot MainHand { get; } = new(EquipmentSlotType.MainHand);

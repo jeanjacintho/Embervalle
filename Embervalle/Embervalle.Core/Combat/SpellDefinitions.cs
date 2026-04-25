@@ -1,5 +1,6 @@
 namespace Embervalle.Core.Combat
 {
+    /// <summary>Catálogo estático dos feitiços disponíveis no jogo.</summary>
     public static class SpellDefinitions
     {
         public static readonly SpellData Fireball = new()

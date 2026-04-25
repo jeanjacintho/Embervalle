@@ -2,8 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Sprites
 {
-    
-    
+    /// <summary>Quatro direções cardeais (visuais, combate, arma).</summary>
     public enum PlayerCardinalFacing
     {
         Down,
@@ -12,7 +11,7 @@ namespace Embervalle.Core.Sprites
         Right,
     }
 
-    
+    /// <summary>Converte a direção lógica em vetor unidade 2D (usado no combate, ex. mira de arc).</summary>
     public static class MeleeFacingVectors
     {
         public static Vector2 ToWorldUnit(PlayerCardinalFacing f) =>

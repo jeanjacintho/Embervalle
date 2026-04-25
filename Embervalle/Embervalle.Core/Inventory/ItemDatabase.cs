@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Inventory
 {
+    /// <summary>Registro global de todos os tipos de item carregados no jogo, indexados por ID.</summary>
     public static class ItemDatabase
     {
         private static readonly Dictionary<string, ItemData> Items = new();
@@ -16,10 +17,9 @@ namespace Embervalle.Core.Inventory
 
         public static int Count => Items.Count;
 
-        
         public static void ResetCatalog() => Items.Clear();
 
-        
+        /// <summary>Carrega o catálogo a partir de ficheiro se existir; senão regista itens de demonstração.</summary>
         public static void RegisterCoreItems()
         {
             if (Items.Count > 0)
@@ -36,6 +36,7 @@ namespace Embervalle.Core.Inventory
             RegisterFallbackDemoItems();
         }
 
+        /// <summary>Conjunto mínimo de itens quando o ficheiro de catálogo não está disponível.</summary>
         private static void RegisterFallbackDemoItems()
         {
             Register(new ItemData

@@ -1,7 +1,6 @@
 namespace Embervalle.Core.Inventory
 {
-    
-    
+    /// <summary>Barra de ação rápida do jogador com dois slots de acesso direto durante o combate.</summary>
     public sealed class ToolbarSlots : IContainer
     {
         public const int SlotCountValue = 2;

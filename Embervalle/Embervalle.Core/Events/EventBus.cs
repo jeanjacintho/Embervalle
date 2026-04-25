@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Embervalle.Core.Events
 {
-    
-    
+    /// <summary>Publicação/assinatura em memória (padrão observer) para desacoplar sistemas.</summary>
     public static class EventBus
     {
         private static readonly Dictionary<Type, List<Delegate>> Subscribers = new();
 
+        /// <summary>Regista um handler para o tipo de evento <typeparamref name="T"/>.</summary>
         public static void Subscribe<T>(Action<T> handler)
             where T : class
         {
@@ -22,6 +22,7 @@ namespace Embervalle.Core.Events
             list.Add(handler);
         }
 
+        /// <summary>Notifica todos os subscritores de <typeparamref name="T"/> com a instância dada.</summary>
         public static void Publish<T>(T evt)
             where T : class
         {

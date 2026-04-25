@@ -5,12 +5,12 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    
+    /// <summary>Cria componentes de sprite único para personagens definidos com <see cref="CharacterVisualKind.SingleSpriteSheet"/>.</summary>
     public static class SpriteCharacterFactory
     {
         private const string DefaultPlayerSheetPath = "Sprites/Characters/player";
 
-        
+        /// <summary>Cria um <see cref="SpriteComponent"/> de folha única com animação idle inicial.</summary>
         public static SpriteComponent CreateSingleSprite(CharacterDefinition definition, AssetManager assetManager)
         {
             if (definition.VisualKind != CharacterVisualKind.SingleSpriteSheet)

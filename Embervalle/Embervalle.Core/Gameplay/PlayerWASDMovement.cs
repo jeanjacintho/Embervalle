@@ -4,16 +4,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Embervalle.Core.Gameplay
 {
-    
-    
+    /// <summary>Input WASD no corpo do jogador: desloca e aplica limites do viewport (origem do sprite).</summary>
     public static class PlayerWASDMovement
     {
+        /// <summary>Posiciona os pés do jogador ao centro do viewport com velocidade zero.</summary>
         public static void SpawnCentered(PlayerBody body, int viewportWidth, int viewportHeight)
         {
             body.FeetPosition = new Vector2(viewportWidth / 2f, viewportHeight / 2f);
             body.LastVelocity = Vector2.Zero;
         }
 
+        /// <summary>Aplica input WASD, atualiza <see cref="PlayerBody.FeetPosition"/> e <see cref="PlayerBody.LastVelocity"/>, e limita à área do ecrã.</summary>
         public static void Tick(
             PlayerBody body,
             KeyboardState keyboard,
