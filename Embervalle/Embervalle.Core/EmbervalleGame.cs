@@ -17,11 +17,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Embervalle.Core
 {
-    
-    
+    /// <summary>Entrada principal MonoGame: estados (menu, pausa, jogo), input, desenho e inventário básico.</summary>
     public class EmbervalleGame : Game
     {
-        
         private GraphicsDeviceManager graphicsDeviceManager;
 
         private readonly GameSessionController session = new(GameSessionState.MainMenu);
@@ -57,36 +55,28 @@ namespace Embervalle.Core
 
         private CompositeCharacterRenderer compositeRenderer = null!;
 
-        
+        /// <summary>Plataformas móveis (tecnologia de toque, orientação).</summary>
         public readonly static bool IsMobile = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS();
+        public readonly static bool IsDesktop = OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
 
-        
-        public readonly static bool IsDesktop =
-            OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
-
-        
         public EmbervalleGame()
         {
             graphicsDeviceManager = new GraphicsDeviceManager(this);
 
-            
             Services.AddService(typeof(GraphicsDeviceManager), graphicsDeviceManager);
 
             Content.RootDirectory = "Content";
 
-            
             graphicsDeviceManager.SupportedOrientations =
                 DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
 
             IsMouseVisible = true;
         }
-
-        
+        /// <summary>Inicializa localização e culturas suportadas.</summary>
         protected override void Initialize()
         {
             base.Initialize();
 
-            
             List<CultureInfo> cultures = LocalizationManager.GetSupportedCultures();
             var languages = new List<CultureInfo>();
             for (int i = 0; i < cultures.Count; i++)
@@ -94,12 +84,11 @@ namespace Embervalle.Core
                 languages.Add(cultures[i]);
             }
 
-            
             var selectedLanguage = LocalizationManager.DEFAULT_CULTURE_CODE;
             LocalizationManager.SetCulture(selectedLanguage);
         }
 
-        
+        /// <summary>Carrega conteúdo (textos, sprites, fontes) e inicializa componentes.</summary>
         protected override void LoadContent()
         {
             base.LoadContent();
@@ -146,6 +135,7 @@ namespace Embervalle.Core
             playerAnim = new PlayerSpriteAnimationController(playerLocomotion);
         }
 
+        /// <summary>Libera recursos (texturas, fontes) após fechar o jogo.</summary>
         protected override void UnloadContent()
         {
             itemIconAtlasTexture?.Dispose();
@@ -155,32 +145,23 @@ namespace Embervalle.Core
             base.UnloadContent();
         }
 
-        
+        /// <summary>Gerencia entrada (teclado, mouse, gamepad), estado do jogo e lógica de interação.</summary>
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             MouseState mouseState = Mouse.GetState();
 
-            
             KeyboardState prevKeyboardState = previousKeyboardState;
             GamePadState prevGamePadState = previousGamePadState;
             MouseState prevMouseState = previousMouseState;
 
-            bool escapeJustPressed =
-                keyboardState.IsKeyDown(Keys.Escape) && prevKeyboardState.IsKeyUp(Keys.Escape);
-            bool iJustPressed =
-                keyboardState.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I);
-            bool rightClick =
-                mouseState.RightButton == ButtonState.Pressed
-                && prevMouseState.RightButton == ButtonState.Released;
-            bool backJustPressed =
-                gamePadState.Buttons.Back == ButtonState.Pressed
-                && prevGamePadState.Buttons.Back == ButtonState.Released;
+            bool escapeJustPressed = keyboardState.IsKeyDown(Keys.Escape) && prevKeyboardState.IsKeyUp(Keys.Escape);
+            bool iJustPressed = eyboardState.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I);
+            bool rightClick = mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released;
+            bool backJustPressed = gamePadState.Buttons.Back == ButtonState.Pressed && prevGamePadState.Buttons.Back == ButtonState.Released;
 
-            bool click =
-                mouseState.LeftButton == ButtonState.Pressed
-                && prevMouseState.LeftButton == ButtonState.Released;
+            bool click = mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released;
 
             int vw = GraphicsDevice.Viewport.Width;
             int vh = GraphicsDevice.Viewport.Height;
@@ -293,7 +274,6 @@ namespace Embervalle.Core
                         selectedToolbarSlotIndex = 1;
                     }
 
-                    
                     if (!combat.IsPlayerMovementLocked)
                     {
                         PlayerWASDMovement.Tick(player, keyboardState, dt, vw, vh);
@@ -324,7 +304,6 @@ namespace Embervalle.Core
                 }
             }
 
-            
             previousKeyboardState = keyboardState;
             previousGamePadState = gamePadState;
             previousMouseState = mouseState;
@@ -332,7 +311,7 @@ namespace Embervalle.Core
             base.Update(gameTime);
         }
 
-        
+        /// <summary>Desenha interface e estado do jogo.</summary>
         protected override void Draw(GameTime gameTime)
         {
             int vw = GraphicsDevice.Viewport.Width;
@@ -396,6 +375,7 @@ namespace Embervalle.Core
             base.Draw(gameTime);
         }
 
+        /// <summary>Desenha o personagem principal (sprite ou composição) com animação e sombreamento.</summary>
         private void DrawPlayerCharacter()
         {
             float baseDepth = worldRenderer.GetLayerDepth(player.FeetPosition.Y);
@@ -422,6 +402,7 @@ namespace Embervalle.Core
             }
         }
 
+        /// <summary>Desenha debug de mira e inimigos.</summary>
         private void DrawCombatDebug(int viewportWidth, int viewportHeight)
         {
             Vector2 from = player.FeetPosition;
@@ -470,13 +451,14 @@ namespace Embervalle.Core
 
         }
 
+        /// <summary>Desenha HUD básico (vida, mana, inventário, etc.) na parte superior da tela.</summary>
         private void DrawGameplayHud(int viewportWidth, int viewportHeight)
         {
-            string hud =
-                $"HP {player.Health:0}/{player.MaxHealth:0}  Mana {combat.Mana.Current:0}/{combat.Mana.Max:0}  X/C toolbar  LMB use item  I bag  Q spell  Esc";
+            string hud = $"HP {player.Health:0}/{player.MaxHealth:0}  Mana {combat.Mana.Current:0}/{combat.Mana.Max:0}  X/C toolbar  LMB use item  I bag  Q spell  Esc";
             spriteBatch.DrawString(font, hud, new Vector2(8, viewportHeight - 52), Color.White * 0.9f);
         }
 
+        /// <summary>Desenha os slots de ferramenta rápida na interface do jogador.</summary>
         private void DrawToolbarSlots(int viewportHeight)
         {
             for (int i = 0; i < ToolbarSlots.SlotCountValue; i++)
@@ -517,6 +499,7 @@ namespace Embervalle.Core
             spriteBatch.DrawString(font, "C", new Vector2(r1.X + 14, r1.Y - 16), Color.White * 0.9f);
         }
 
+        /// <summary>Desenha o painel do inventário na tela.</summary>
         private void DrawBackpackPanel(int viewportWidth, int viewportHeight)
         {
             spriteBatch.Draw(
@@ -556,6 +539,7 @@ namespace Embervalle.Core
             }
         }
 
+        /// <summary>Desenha o sprite de um item na interface do jogador.</summary>
         private void DrawItemSpriteInSlot(Rectangle slotRect, ItemInstance? stack)
         {
             if (stack == null || !ItemDatabase.TryGet(stack.ItemId, out ItemData? def) || def is null)
@@ -589,6 +573,7 @@ namespace Embervalle.Core
                 0f);
         }
 
+        /// <summary>Gerencia a transferência de itens entre slots do inventário e toolbar.</summary>
         private void TryHandleBackpackTransfer(Point mouse, int viewportWidth, int viewportHeight)
         {
             int? gridHit = BackpackScreenLayout.HitTestGrid(viewportWidth, viewportHeight, mouse);

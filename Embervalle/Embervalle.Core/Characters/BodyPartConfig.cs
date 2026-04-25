@@ -2,8 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    
-    
+    /// <summary>Configuração de offsets e escalas das partes do sprite de um personagem composto conforme o biotipo.</summary>
     public sealed class BodyPartConfig
     {
         public Vector2 LegsOffset;
@@ -16,6 +15,7 @@ namespace Embervalle.Core.Characters
         public Vector2 ArmsScale = Vector2.One;
         public Vector2 HeadScale = Vector2.One;
 
+        /// <summary>Obtém o offset de uma parte do sprite conforme o slot.</summary>
         public Vector2 GetOffset(CharacterPartSlot slot)
         {
             return slot switch
@@ -29,6 +29,7 @@ namespace Embervalle.Core.Characters
             };
         }
 
+        /// <summary>Obtém a escala de uma parte do sprite conforme o slot.</summary>
         public Vector2 GetScale(CharacterPartSlot slot)
         {
             return slot switch
@@ -41,7 +42,7 @@ namespace Embervalle.Core.Characters
             };
         }
 
-        
+        /// <summary>Cria uma configuração de partes do sprite para um biotipo específico, ajustando offsets para stack de sprites.</summary>
         public static BodyPartConfig ForStackedBodySprite(BodyType bodyType)
         {
             BodyPartConfig c = For(bodyType);
@@ -52,7 +53,7 @@ namespace Embervalle.Core.Characters
             return c;
         }
 
-        
+        /// <summary>Cria uma configuração de partes do sprite para um biotipo específico, ajustando offsets para stack de sprites.</summary>
         public static BodyPartConfig For(BodyType body)
         {
             return body switch

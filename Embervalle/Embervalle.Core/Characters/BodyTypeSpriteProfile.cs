@@ -4,10 +4,10 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    
-    
+    /// <summary>Perfil de sprites de um biotipo: mapeia cada slot de parte do corpo à sua <see cref="BodyPartSpriteSpec"/>.</summary>
     public sealed class BodyTypeSpriteProfile
     {
+        /// <summary>Cria um perfil de sprite para um biotipo específico.</summary>
         public BodyTypeSpriteProfile(
             BodyType bodyType,
             IReadOnlyDictionary<CharacterPartSlot, BodyPartSpriteSpec> partsBySlot)
@@ -20,7 +20,7 @@ namespace Embervalle.Core.Characters
 
         public IReadOnlyDictionary<CharacterPartSlot, BodyPartSpriteSpec> PartsBySlot { get; }
 
-        
+        /// <summary>Aplica o perfil de sprite a um componente de personagem composto.</summary>
         public void ApplyToComposite(CompositeCharacterComponent composite, CharacterAnimationId id)
         {
             bool flipFromTorso = false;

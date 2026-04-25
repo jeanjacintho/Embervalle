@@ -3,11 +3,10 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    
-    
+    /// <summary>Biblioteca de animações padrão para personagens humanoides, mapeando IDs lógicos a templates de animação.</summary>
     public static class CharacterAnimationLibrary
     {
-        
+        /// <summary>Dicionário de animações padrão para personagens humanoides.</summary>
         public static IReadOnlyDictionary<CharacterAnimationId, Animation> DefaultHumanoid { get; } =
             new Dictionary<CharacterAnimationId, Animation>
             {
@@ -31,6 +30,7 @@ namespace Embervalle.Core.Characters
                 [CharacterAnimationId.Death] = PlayerAnimations.Death,
             };
 
+        /// <summary>Obtém a animação padrão para um ID de animação específico.</summary>
         public static Animation GetTemplate(CharacterAnimationId id)
         {
             return DefaultHumanoid.TryGetValue(id, out Animation? t)

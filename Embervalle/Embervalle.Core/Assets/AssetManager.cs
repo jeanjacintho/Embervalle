@@ -6,20 +6,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Assets
 {
-    
-    
+    /// <summary>Cache de <see cref="Texture2D"/> e <see cref="SpriteSheet"/> carregados via <see cref="ContentManager"/>.</summary>
     public sealed class AssetManager
     {
         private readonly ContentManager _content;
         private readonly Dictionary<string, SpriteSheet> _sheets = new();
         private readonly Dictionary<string, Texture2D> _textures = new();
 
-        public AssetManager(ContentManager content)
-        {
-            _content = content;
-        }
+        public AssetManager(ContentManager content) => _content = content;
 
-        
+        /// <summary>Tenta carregar uma textura; devolve null se não encontrar ou ocorrer erro.</summary>
         public Texture2D? TryLoadTexture(string contentPathWithoutExtension)
         {
             if (string.IsNullOrWhiteSpace(contentPathWithoutExtension))
@@ -44,6 +40,7 @@ namespace Embervalle.Core.Assets
             }
         }
 
+        /// <summary>Carrega uma folha de sprites; devolve cache se já carregada.</summary>
         public SpriteSheet LoadSheet(string contentPathWithoutExtension, int frameWidth, int frameHeight)
         {
             if (_sheets.TryGetValue(contentPathWithoutExtension, out SpriteSheet? cached))

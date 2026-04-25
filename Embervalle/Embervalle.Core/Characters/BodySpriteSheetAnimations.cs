@@ -3,8 +3,7 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    
-    
+    /// <summary>Define as animações de idle, caminhada e ataque para cada camada do sprite de corpo humanoide.</summary>
     public static class BodySpriteSheetAnimations
     {
         public const int SheetColumns = 24;
@@ -17,10 +16,10 @@ namespace Embervalle.Core.Characters
 
         private const float WalkFrameDuration = 0.10f;
 
-        private static readonly IReadOnlyDictionary<CharacterPartSlot, IReadOnlyDictionary<CharacterAnimationId, Animation>> Cache =
-            BuildAll();
+        /// <summary>Cache de animações para todas as partes do corpo.</summary>
+        private static readonly IReadOnlyDictionary<CharacterPartSlot, IReadOnlyDictionary<CharacterAnimationId, Animation>> Cache = BuildAll();
 
-        
+        /// <summary>Obtém as animações disponíveis para uma parte do corpo conforme o slot.</summary>
         public static IReadOnlyDictionary<CharacterAnimationId, Animation> GetForPart(CharacterPartSlot slot)
         {
             return Cache[slot];
@@ -28,6 +27,7 @@ namespace Embervalle.Core.Characters
 
         private static int Linear(int row, int col) => row * SheetColumns + col;
 
+        /// <summary>Obtém a linha de animação de idle para uma parte do corpo conforme o slot.</summary>
         private static int IdleRow(CharacterPartSlot slot) => slot switch
         {
             CharacterPartSlot.Head => 0,
@@ -37,6 +37,7 @@ namespace Embervalle.Core.Characters
             _ => 0,
         };
 
+        /// <summary>Obtém a linha de animação de walk para uma parte do corpo conforme o slot.</summary>
         private static int WalkRow(CharacterPartSlot slot) => slot switch
         {
             CharacterPartSlot.Head => 4,
@@ -46,7 +47,7 @@ namespace Embervalle.Core.Characters
             _ => 4,
         };
 
-        
+        /// <summary>Obtém os índices das animações de idle para uma parte do corpo conforme a linha e coluna inicial.</summary>
         private static int[] IdleDir(int partRow, int colStart)
         {
             var a = new int[5];
@@ -58,7 +59,7 @@ namespace Embervalle.Core.Characters
             return a;
         }
 
-        
+        /// <summary>Obtém os índices das animações de walk para uma parte do corpo conforme a linha e coluna inicial.</summary>
         private static int[] WalkDir(int partRow, int colStart)
         {
             var a = new int[6];
@@ -70,6 +71,7 @@ namespace Embervalle.Core.Characters
             return a;
         }
 
+        /// <summary>Constrói um dicionário de animações para todas as partes do corpo.</summary>
         private static Dictionary<CharacterPartSlot, IReadOnlyDictionary<CharacterAnimationId, Animation>> BuildAll()
         {
             var outer = new Dictionary<CharacterPartSlot, IReadOnlyDictionary<CharacterAnimationId, Animation>>();
@@ -87,6 +89,7 @@ namespace Embervalle.Core.Characters
             return outer;
         }
 
+        /// <summary>Constrói um dicionário de animações para uma parte do corpo.</summary>
         private static IReadOnlyDictionary<CharacterAnimationId, Animation> BuildForPart(CharacterPartSlot slot)
         {
             int ir = IdleRow(slot);

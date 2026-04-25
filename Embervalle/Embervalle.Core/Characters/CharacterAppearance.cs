@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    
+    /// <summary>Aparência visual de um personagem: cores, estilos de roupa, cabelo e acessórios.</summary>
     public sealed class CharacterAppearance
     {
         public BodyType Body { get; set; } = BodyType.Average;
@@ -27,7 +27,6 @@ namespace Embervalle.Core.Characters
 
         public Color SkinColor { get; set; } = new Color(220, 175, 130);
 
-        
         public bool MultiplyCompositeLayersByAppearanceColors { get; set; }
     }
 }

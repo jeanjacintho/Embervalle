@@ -4,15 +4,13 @@ using Embervalle.Core.Sprites;
 
 namespace Embervalle.Core.Characters
 {
-    
+    /// <summary>Componente de personagem composto por múltiplas camadas de sprite animadas independentemente.</summary>
     public sealed class CompositeCharacterComponent : ILocomotionAnimationTarget
     {
         public BodyType BodyType { get; set; } = BodyType.Average;
 
-        
         public BodyTypeSpriteProfile? SpriteProfile { get; set; }
 
-        
         public bool SpriteFlipHorizontal { get; set; }
 
         private CharacterAnimationId? _currentLogicalAnimationId;
@@ -29,6 +27,7 @@ namespace Embervalle.Core.Characters
 
         public BodyPartConfig Config => BodyPartConfig.ForStackedBodySprite(BodyType);
 
+        /// <summary>Define a animação lógica para o componente de personagem composto.</summary>
         public void SetLogicalAnimation(CharacterAnimationId id)
         {
             if (SpriteProfile == null)
@@ -45,6 +44,7 @@ namespace Embervalle.Core.Characters
             SpriteProfile.ApplyToComposite(this, id);
         }
 
+        /// <summary>Atualiza a animação do componente de personagem composto.</summary>
         public void UpdateAnimation(float deltaTime)
         {
             foreach (CharacterPart part in EnumerateAnimatableParts())
@@ -58,6 +58,7 @@ namespace Embervalle.Core.Characters
             }
         }
 
+        /// <summary>Enumera as partes animáveis do componente de personagem composto.</summary>
         private IEnumerable<CharacterPart> EnumerateAnimatableParts()
         {
             yield return Legs;
@@ -66,6 +67,7 @@ namespace Embervalle.Core.Characters
             yield return Head;
         }
 
+        /// <summary>Obtém uma parte do componente de personagem composto conforme o slot.</summary>
         public CharacterPart GetPart(CharacterPartSlot slot)
         {
             return slot switch

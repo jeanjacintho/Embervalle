@@ -3,16 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Assets
 {
-    
-    
+    /// <summary>Gera textura de placeholder para o atlas de ícones de itens (grelha de células coloridas).</summary>
     public static class ItemIconAtlasBuilder
     {
         public const int CellSize = 16;
-
         public const int Columns = 8;
-
         public const int Rows = 2;
 
+        /// <summary>Cria uma textura renderizada com uma grelha de células coloridas para ícones de itens.</summary>
         public static Texture2D Build(GraphicsDevice device, Texture2D unitPixel, SpriteBatch spriteBatch)
         {
             int w = Columns * CellSize;
@@ -28,7 +26,6 @@ namespace Embervalle.Core.Assets
                 DepthStencilState.None,
                 RasterizerState.CullCounterClockwise);
 
-            
             Color[] colors =
             {
                 new Color(120, 120, 130),

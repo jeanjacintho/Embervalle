@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Embervalle.Core.Characters
 {
-    
+    /// <summary>Uma camada de sprite de um personagem composto: slot, folha de sprites, cor e animação em execução.</summary>
     public sealed class CharacterPart
     {
         public CharacterPartSlot Slot { get; init; }
@@ -18,7 +18,6 @@ namespace Embervalle.Core.Characters
 
         public SpriteEffects Effects { get; set; } = SpriteEffects.None;
 
-        
         public Animation? PlayingAnimation { get; set; }
     }
 }

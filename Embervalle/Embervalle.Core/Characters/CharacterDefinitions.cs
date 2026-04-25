@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    
+    /// <summary>Catálogo de definições estáticas de todos os personagens do jogo (jogador e NPCs).</summary>
     public static class CharacterDefinitions
     {
-        
+        /// <summary>Definição do personagem jogador.</summary>
         public static readonly CharacterDefinition Player = new()
         {
             Id = "player",
@@ -26,6 +26,7 @@ namespace Embervalle.Core.Characters
             },
         };
 
+        /// <summary>Definição do personagem Gareth.</summary>
         public static readonly CharacterDefinition Gareth = new()
         {
             Id = "gareth_blacksmith",
@@ -46,6 +47,7 @@ namespace Embervalle.Core.Characters
             },
         };
 
+        /// <summary>Definição do personagem Maya.</summary>
         public static readonly CharacterDefinition Maya = new()
         {
             Id = "maya_farmer",
@@ -66,6 +68,7 @@ namespace Embervalle.Core.Characters
             },
         };
 
+        /// <summary>Definição do personagem Timo.</summary>
         public static readonly CharacterDefinition Timo = new()
         {
             Id = "timo_child",
@@ -80,6 +83,7 @@ namespace Embervalle.Core.Characters
             },
         };
 
+        /// <summary>Definição do personagem Bron.</summary>
         public static readonly CharacterDefinition Bron = new()
         {
             Id = "bron_innkeeper",
@@ -95,6 +99,7 @@ namespace Embervalle.Core.Characters
             },
         };
 
+        /// <summary>Definição do personagem Sera.</summary>
         public static readonly CharacterDefinition Sera = new()
         {
             Id = "sera_merchant",

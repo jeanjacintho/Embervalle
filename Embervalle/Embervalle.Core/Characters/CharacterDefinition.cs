@@ -2,8 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Embervalle.Core.Characters
 {
-    
-    
+    /// <summary>Definição completa de um personagem: ID, biotipo, aparência e estratégia de renderização visual.</summary>
     public sealed class CharacterDefinition
     {
         public string Id { get; init; } = "";
@@ -12,10 +11,8 @@ namespace Embervalle.Core.Characters
 
         public CharacterAppearance Appearance { get; init; } = new();
 
-        
         public CharacterVisualKind VisualKind { get; init; } = CharacterVisualKind.CompositeFourPart;
 
-        
         public string SingleSpriteContentPath { get; init; } = "";
 
         public int SingleSpriteFrameWidth { get; init; } = 48;
